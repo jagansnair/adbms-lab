@@ -1,0 +1,479 @@
+mysql> use ogdb;
+Database changed
+mysql> INSERT INTO Department (dept_no, dept_name, location)
+    -> VALUES
+    -> ('D01', 'Finance', 'New York'),
+    -> ('D02', 'Marketing', 'Los Angeles'),
+    -> ('D03', 'Human Resources', 'Chicago'),
+    -> ('D04', 'Operations', 'Houston'),
+    -> ('D05', 'IT', 'San Francisco');
+ERROR 1054 (42S22): Unknown column 'location' in 'field list'
+mysql> INSERT INTO Department (dept_no, dept_name, location) VALUES ('D01', 'Finance', 'New York'), ('D02', 'Marketing', 'Los Angeles'), ('D03', 'Human Resources', 'Chicago'), ('D04', 'Operations', 'Houston'), ('D05', 'IT', 'San Francisco');^[[A^[[B^C
+
+^C
+mysql> show tables;
++----------------+
+| Tables_in_ogdb |
++----------------+
+| Department     |
+| Employee       |
+| Orders         |
+| Persons        |
++----------------+
+4 rows in set (0.01 sec)
+
+mysql> desc department;
+ERROR 1146 (42S02): Table 'ogdb.department' doesn't exist
+mysql> desc Department;
++-----------+-------------+------+-----+---------+-------+
+| Field     | Type        | Null | Key | Default | Extra |
++-----------+-------------+------+-----+---------+-------+
+| dept_no   | varchar(5)  | NO   | PRI | NULL    |       |
+| dept_name | varchar(20) | YES  |     | NULL    |       |
++-----------+-------------+------+-----+---------+-------+
+2 rows in set (0.01 sec)
+
+mysql> alter table Department  add location  varchar(20);
+Query OK, 0 rows affected (0.06 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> desc Department;
++-----------+-------------+------+-----+---------+-------+
+| Field     | Type        | Null | Key | Default | Extra |
++-----------+-------------+------+-----+---------+-------+
+| dept_no   | varchar(5)  | NO   | PRI | NULL    |       |
+| dept_name | varchar(20) | YES  |     | NULL    |       |
+| location  | varchar(20) | YES  |     | NULL    |       |
++-----------+-------------+------+-----+---------+-------+
+3 rows in set (0.00 sec)
+
+mysql> INSERT INTO Department (dept_no, dept_name, location) VALUES ('D01', 'Finance', 'New York'), ('D02', 'Marketing', 'Los Angeles'), ('D03', 'Human Resources', 'Chicago'), ('D04', 'Operations', 'Houston'), ('D05', 'IT', 'San Francisco');
+Query OK, 5 rows affected (0.04 sec)
+Records: 5  Duplicates: 0  Warnings: 0
+
+mysql> desc Department;
++-----------+-------------+------+-----+---------+-------+
+| Field     | Type        | Null | Key | Default | Extra |
++-----------+-------------+------+-----+---------+-------+
+| dept_no   | varchar(5)  | NO   | PRI | NULL    |       |
+| dept_name | varchar(20) | YES  |     | NULL    |       |
+| location  | varchar(20) | YES  |     | NULL    |       |
++-----------+-------------+------+-----+---------+-------+
+3 rows in set (0.01 sec)
+
+mysql> INSERT INTO Employee (emp_no, emp_name, designation, dept_no, salary) VALUES
+    -> ('emp1', 'John', 'Manager', 'D01', 55000),
+    -> ('emp2', 'Alice', 'Assistant Manager', 'D02', 48000),
+    -> ('emp3', 'Bob', 'HR Executive', 'D02', 35000),
+    -> ('emp4', 'Charlie', 'Marketing Analyst', 'D03', 38000),
+    -> ('emp5', 'David', 'Software Engineer', 'D04', 42000),
+    -> ('emp6', 'Emma', 'Manager', 'D02', 50000),
+    -> ('emp7', 'Frank', 'Computer Assistant', 'D05', 32000),
+    -> ('emp8', 'Grace', 'HR Executive', 'D02', 30000),
+    -> ('emp9', 'Henry', 'Accountant', 'D01', 40000),
+    -> ('emp10', 'Ivy', 'Manager', 'D03', 7000);
+Query OK, 10 rows affected (0.05 sec)
+Records: 10  Duplicates: 0  Warnings: 0
+
+mysql> desc Employee;
++-------------+-------------+------+-----+---------+-------+
+| Field       | Type        | Null | Key | Default | Extra |
++-------------+-------------+------+-----+---------+-------+
+| emp_no      | varchar(5)  | NO   | PRI | NULL    |       |
+| emp_name    | varchar(20) | YES  |     | NULL    |       |
+| dob         | date        | YES  |     | NULL    |       |
+| address     | text        | YES  |     | NULL    |       |
+| mobile_no   | int         | YES  |     | NULL    |       |
+| dept_no     | varchar(5)  | YES  | MUL | NULL    |       |
+| salary      | int         | YES  |     | NULL    |       |
+| Designation | varchar(20) | YES  |     | NULL    |       |
++-------------+-------------+------+-----+---------+-------+
+8 rows in set (0.00 sec)
+
+mysql> select * from employee;
+ERROR 1146 (42S02): Table 'ogdb.employee' doesn't exist
+mysql> select * from Employee;
++--------+----------+------+---------+-----------+---------+--------+--------------------+
+| emp_no | emp_name | dob  | address | mobile_no | dept_no | salary | Designation        |
++--------+----------+------+---------+-----------+---------+--------+--------------------+
+| emp1   | John     | NULL | NULL    |      NULL | D01     |  55000 | Manager            |
+| emp10  | Ivy      | NULL | NULL    |      NULL | D03     |   7000 | Manager            |
+| emp2   | Alice    | NULL | NULL    |      NULL | D02     |  48000 | Assistant Manager  |
+| emp3   | Bob      | NULL | NULL    |      NULL | D02     |  35000 | HR Executive       |
+| emp4   | Charlie  | NULL | NULL    |      NULL | D03     |  38000 | Marketing Analyst  |
+| emp5   | David    | NULL | NULL    |      NULL | D04     |  42000 | Software Engineer  |
+| emp6   | Emma     | NULL | NULL    |      NULL | D02     |  50000 | Manager            |
+| emp7   | Frank    | NULL | NULL    |      NULL | D05     |  32000 | Computer Assistant |
+| emp8   | Grace    | NULL | NULL    |      NULL | D02     |  30000 | HR Executive       |
+| emp9   | Henry    | NULL | NULL    |      NULL | D01     |  40000 | Accountant         |
++--------+----------+------+---------+-----------+---------+--------+--------------------+
+10 rows in set (0.00 sec)
+
+mysql> SELECT * FROM Employee;
++--------+----------+------+---------+-----------+---------+--------+--------------------+
+| emp_no | emp_name | dob  | address | mobile_no | dept_no | salary | Designation        |
++--------+----------+------+---------+-----------+---------+--------+--------------------+
+| emp1   | John     | NULL | NULL    |      NULL | D01     |  55000 | Manager            |
+| emp10  | Ivy      | NULL | NULL    |      NULL | D03     |   7000 | Manager            |
+| emp2   | Alice    | NULL | NULL    |      NULL | D02     |  48000 | Assistant Manager  |
+| emp3   | Bob      | NULL | NULL    |      NULL | D02     |  35000 | HR Executive       |
+| emp4   | Charlie  | NULL | NULL    |      NULL | D03     |  38000 | Marketing Analyst  |
+| emp5   | David    | NULL | NULL    |      NULL | D04     |  42000 | Software Engineer  |
+| emp6   | Emma     | NULL | NULL    |      NULL | D02     |  50000 | Manager            |
+| emp7   | Frank    | NULL | NULL    |      NULL | D05     |  32000 | Computer Assistant |
+| emp8   | Grace    | NULL | NULL    |      NULL | D02     |  30000 | HR Executive       |
+| emp9   | Henry    | NULL | NULL    |      NULL | D01     |  40000 | Accountant         |
++--------+----------+------+---------+-----------+---------+--------+--------------------+
+10 rows in set (0.00 sec)
+
+mysql> INSERT INTO Department (dept_no, dept_name, location)
+    -> VALUES
+    -> ('D01', 'Finance', 'New York'),
+    -> ('D02', 'Marketing', 'Los Angeles'),
+    -> ('D03', 'Human Resources', 'Chicago'),
+    -> ('D04', 'Operations', 'Houston'),
+    -> ('D05', 'IT', 'San Francisco');
+ERROR 1062 (23000): Duplicate entry 'D01' for key 'Department.PRIMARY'
+mysql> INSERT INTO Department (dept_no, dept_name, location) VALUES ('D01', 'Finance', 'New York'), ('D02', 'Marketing', 'Los Angeles'), ('D03', 'Human Resources', 'Chicago'), ('D04', 'Operations', 'Houston'), ('D05', 'IT', 'San Francisco');
+ERROR 1062 (23000): Duplicate entry 'D01' for key 'Department.PRIMARY'
+mysql> select * from Department
+    -> ;
++---------+-----------------+---------------+
+| dept_no | dept_name       | location      |
++---------+-----------------+---------------+
+| D01     | Finance         | New York      |
+| D02     | Marketing       | Los Angeles   |
+| D03     | Human Resources | Chicago       |
+| D04     | Operations      | Houston       |
+| D05     | IT              | San Francisco |
++---------+-----------------+---------------+
+5 rows in set (0.00 sec)
+
+mysql> SELECT emp_no, emp_name  FROM Employee where dept_no='D02';
++--------+----------+
+| emp_no | emp_name |
++--------+----------+
+| emp2   | Alice    |
+| emp3   | Bob      |
+| emp6   | Emma     |
+| emp8   | Grace    |
++--------+----------+
+4 rows in set (0.00 sec)
+
+mysql> SELECT emp_no, emp_name,Designation,dept_no  FROM Employee ORDER BY salary DESC;
++--------+----------+--------------------+---------+
+| emp_no | emp_name | Designation        | dept_no |
++--------+----------+--------------------+---------+
+| emp1   | John     | Manager            | D01     |
+| emp6   | Emma     | Manager            | D02     |
+| emp2   | Alice    | Assistant Manager  | D02     |
+| emp5   | David    | Software Engineer  | D04     |
+| emp9   | Henry    | Accountant         | D01     |
+| emp4   | Charlie  | Marketing Analyst  | D03     |
+| emp3   | Bob      | HR Executive       | D02     |
+| emp7   | Frank    | Computer Assistant | D05     |
+| emp8   | Grace    | HR Executive       | D02     |
+| emp10  | Ivy      | Manager            | D03     |
++--------+----------+--------------------+---------+
+10 rows in set (0.00 sec)
+
+mysql> SELECT emp_no, emp_name FROM Employee WHERE salary BETWEEN 2000 AND 5000;
+Empty set (0.00 sec)
+
+mysql> SELECT DISTINCT designation FROM Employee;
++--------------------+
+| designation        |
++--------------------+
+| Manager            |
+| Assistant Manager  |
+| HR Executive       |
+| Marketing Analyst  |
+| Software Engineer  |
+| Computer Assistant |
+| Accountant         |
++--------------------+
+7 rows in set (0.00 sec)
+
+mysql> UPDATE Employee SET salary = 45000 WHERE designation = 'Manager';
+Query OK, 3 rows affected (0.04 sec)
+Rows matched: 3  Changed: 3  Warnings: 0
+
+mysql> select * from Employee;
++--------+----------+------+---------+-----------+---------+--------+--------------------+
+| emp_no | emp_name | dob  | address | mobile_no | dept_no | salary | Designation        |
++--------+----------+------+---------+-----------+---------+--------+--------------------+
+| emp1   | John     | NULL | NULL    |      NULL | D01     |  45000 | Manager            |
+| emp10  | Ivy      | NULL | NULL    |      NULL | D03     |  45000 | Manager            |
+| emp2   | Alice    | NULL | NULL    |      NULL | D02     |  48000 | Assistant Manager  |
+| emp3   | Bob      | NULL | NULL    |      NULL | D02     |  35000 | HR Executive       |
+| emp4   | Charlie  | NULL | NULL    |      NULL | D03     |  38000 | Marketing Analyst  |
+| emp5   | David    | NULL | NULL    |      NULL | D04     |  42000 | Software Engineer  |
+| emp6   | Emma     | NULL | NULL    |      NULL | D02     |  45000 | Manager            |
+| emp7   | Frank    | NULL | NULL    |      NULL | D05     |  32000 | Computer Assistant |
+| emp8   | Grace    | NULL | NULL    |      NULL | D02     |  30000 | HR Executive       |
+| emp9   | Henry    | NULL | NULL    |      NULL | D01     |  40000 | Accountant         |
++--------+----------+------+---------+-----------+---------+--------+--------------------+
+10 rows in set (0.00 sec)
+
+mysql> UPDATE Employee SET mobile_no = new_mobile_number WHERE emp_name = 'John';
+ERROR 1054 (42S22): Unknown column 'new_mobile_number' in 'field list'
+mysql> UPDATE Employee SET mobile_no = 8157841435 WHERE emp_name = 'John';
+ERROR 1264 (22003): Out of range value for column 'mobile_no' at row 1
+mysql> UPDATE Employee SET mobile_no = '8157841435' WHERE emp_name = 'John';
+ERROR 1264 (22003): Out of range value for column 'mobile_no' at row 1
+mysql> UPDATE Employee SET mobile_no = '8157841435' WHERE emp_name = 'John';
+ERROR 1264 (22003): Out of range value for column 'mobile_no' at row 1
+mysql> desc employee;
+ERROR 1146 (42S02): Table 'ogdb.employee' doesn't exist
+mysql> desc Employee;
++-------------+-------------+------+-----+---------+-------+
+| Field       | Type        | Null | Key | Default | Extra |
++-------------+-------------+------+-----+---------+-------+
+| emp_no      | varchar(5)  | NO   | PRI | NULL    |       |
+| emp_name    | varchar(20) | YES  |     | NULL    |       |
+| dob         | date        | YES  |     | NULL    |       |
+| address     | text        | YES  |     | NULL    |       |
+| mobile_no   | int         | YES  |     | NULL    |       |
+| dept_no     | varchar(5)  | YES  | MUL | NULL    |       |
+| salary      | int         | YES  |     | NULL    |       |
+| Designation | varchar(20) | YES  |     | NULL    |       |
++-------------+-------------+------+-----+---------+-------+
+8 rows in set (0.00 sec)
+
+mysql> UPDATE Employee SET mobile_no = '815784' WHERE emp_name = 'John';
+Query OK, 1 row affected (0.04 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> alter table Employee modify column mobile_no varchar(30);
+Query OK, 10 rows affected (0.09 sec)
+Records: 10  Duplicates: 0  Warnings: 0
+
+mysql> desc Employee;
++-------------+-------------+------+-----+---------+-------+
+| Field       | Type        | Null | Key | Default | Extra |
++-------------+-------------+------+-----+---------+-------+
+| emp_no      | varchar(5)  | NO   | PRI | NULL    |       |
+| emp_name    | varchar(20) | YES  |     | NULL    |       |
+| dob         | date        | YES  |     | NULL    |       |
+| address     | text        | YES  |     | NULL    |       |
+| mobile_no   | varchar(30) | YES  |     | NULL    |       |
+| dept_no     | varchar(5)  | YES  | MUL | NULL    |       |
+| salary      | int         | YES  |     | NULL    |       |
+| Designation | varchar(20) | YES  |     | NULL    |       |
++-------------+-------------+------+-----+---------+-------+
+8 rows in set (0.01 sec)
+
+mysql> UPDATE Employee SET mobile_no = '8157841435' WHERE emp_name = 'John';
+Query OK, 1 row affected (0.04 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> DELETE FROM Employee WHERE salary = 7000;
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> SELECT emp_name, mobile_no FROM Employee WHERE emp_name LIKE 'A%';
++----------+-----------+
+| emp_name | mobile_no |
++----------+-----------+
+| Alice    | NULL      |
++----------+-----------+
+1 row in set (0.00 sec)
+
+mysql> delete * from Employee;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '* from Employee' at line 1
+mysql> delete  from Employee;
+Query OK, 10 rows affected (0.01 sec)
+
+mysql> DELETE FROM Employee WHERE salary = 7000;
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> INSERT INTO Employee (emp_no, emp_name, designation, dept_no, salary) VALUES
+    ->     -> ('emp1', 'John', 'Manager', 'D01', 55000),
+    ->     -> ('emp2', 'Alice', 'Assistant Manager', 'D02', 48000),
+    ->     -> ('emp3', 'Bob', 'HR Executive', 'D02', 35000),
+    ->     -> ('emp4', 'Charlie', 'Marketing Analyst', 'D03', 38000),
+    ->     -> ('emp5', 'David', 'Software Engineer', 'D04', 42000),
+    ->     -> ('emp6', 'Emma', 'Manager', 'D02', 50000),
+    ->     -> ('emp7', 'Frank', 'Computer Assistant', 'D05', 32000),
+    ->     -> ('emp8', 'Grace', 'HR Executive', 'D02', 30000),
+    ->     -> ('emp9', 'Henry', 'Accountant', 'D01', 40000),
+    ->     -> ('emp10', 'Ivy', 'Manager', 'D03', 7000)
+    -> ;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '-> ('emp1', 'John', 'Manager', 'D01', 55000),
+    -> ('emp2', 'Alice', 'Assistan' at line 2
+mysql> 
+mysql> 
+mysql> 
+mysql> 
+mysql> 
+mysql> INSERT INTO Employee (emp_no, emp_name,dob,address,mobile_no,Designation, dept_no, salary) VALUES ('emp1', 'John','2000-12-25','kizhekedath','2255455544', 'Manager', 'D01', 55000),('emp2', 'Jose','2000-11-25','kikedath','2253355544', 'executive', 'D02', 53000),
+    -> ('emp3', 'Bob','2000-12-25','kizhek' ,'2255455544','HR Executive', 'D02', 35000),
+    -> ('emp4', 'Charlie', 'Marketing Analyst', 'D03', 38000),
+    -> ('emp4', 'Charlie', 'Marketing Analyst', 'D03', 38000),
+
+^C
+mysql> INSERT INTO Employee (emp_no, emp_name,dob,address,mobile_no,Designation, dept_no, salary)VALUES
+    -> ('emp1', 'John','2000-12-21','aaa','1234567890', 'Manager', 'D01', 55000),
+    -> ('emp2', 'Alice','2001-11-22','bbb','0987654321', 'Assistant Manager', 'D02', 48000),
+    -> ('emp3', 'Bob','2002-10-23','ccc','1212121212', 'HR Executive', 'D02', 35000),
+    -> ('emp4', 'Charlie','2003-09-24','ddd','2222222222', 'Marketing Analyst', 'D03', 38000),
+    -> ('emp5', 'David','2004-08-25','eee','3333333333', 'Software Engineer', 'D04', 42000),
+    -> ('emp6', 'Emma','2005-07-26','fff','4444444444', 'Manager', 'D02', 50000),
+    -> ('emp7', 'Frank','2006-06-27','hhh','55555555555', 'Computer Assistant', 'D05', 32000),
+    -> ('emp8', 'Grace','2007-05-28','iii','6666666666', 'HR Executive', 'D02', 30000),
+    -> ('emp9', 'Henry','2008-04-29','jjj','4444444444', 'Accountant', 'D01', 40000),
+    -> ('emp10', 'Ivy','2009-03-30','kkk','3333333333', 'Manager', 'D03', 7000);
+Query OK, 10 rows affected (0.04 sec)
+Records: 10  Duplicates: 0  Warnings: 0
+
+mysql> desc Employee;
++-------------+-------------+------+-----+---------+-------+
+| Field       | Type        | Null | Key | Default | Extra |
++-------------+-------------+------+-----+---------+-------+
+| emp_no      | varchar(5)  | NO   | PRI | NULL    |       |
+| emp_name    | varchar(20) | YES  |     | NULL    |       |
+| dob         | date        | YES  |     | NULL    |       |
+| address     | text        | YES  |     | NULL    |       |
+| mobile_no   | varchar(30) | YES  |     | NULL    |       |
+| dept_no     | varchar(5)  | YES  | MUL | NULL    |       |
+| salary      | int         | YES  |     | NULL    |       |
+| Designation | varchar(20) | YES  |     | NULL    |       |
++-------------+-------------+------+-----+---------+-------+
+8 rows in set (0.00 sec)
+
+mysql> select * from Employee;
++--------+----------+------------+---------+-------------+---------+--------+--------------------+
+| emp_no | emp_name | dob        | address | mobile_no   | dept_no | salary | Designation        |
++--------+----------+------------+---------+-------------+---------+--------+--------------------+
+| emp1   | John     | 2000-12-21 | aaa     | 1234567890  | D01     |  55000 | Manager            |
+| emp10  | Ivy      | 2009-03-30 | kkk     | 3333333333  | D03     |   7000 | Manager            |
+| emp2   | Alice    | 2001-11-22 | bbb     | 0987654321  | D02     |  48000 | Assistant Manager  |
+| emp3   | Bob      | 2002-10-23 | ccc     | 1212121212  | D02     |  35000 | HR Executive       |
+| emp4   | Charlie  | 2003-09-24 | ddd     | 2222222222  | D03     |  38000 | Marketing Analyst  |
+| emp5   | David    | 2004-08-25 | eee     | 3333333333  | D04     |  42000 | Software Engineer  |
+| emp6   | Emma     | 2005-07-26 | fff     | 4444444444  | D02     |  50000 | Manager            |
+| emp7   | Frank    | 2006-06-27 | hhh     | 55555555555 | D05     |  32000 | Computer Assistant |
+| emp8   | Grace    | 2007-05-28 | iii     | 6666666666  | D02     |  30000 | HR Executive       |
+| emp9   | Henry    | 2008-04-29 | jjj     | 4444444444  | D01     |  40000 | Accountant         |
++--------+----------+------------+---------+-------------+---------+--------+--------------------+
+10 rows in set (0.00 sec)
+
+mysql> SELECT emp_name, mobile_no FROM Employee WHERE emp_name LIKE 'A%';
++----------+------------+
+| emp_name | mobile_no  |
++----------+------------+
+| Alice    | 0987654321 |
++----------+------------+
+1 row in set (0.00 sec)
+
+mysql> SELECT * FROM Employee WHERE LENGTH(emp_name) >= 3 AND salary > 20000;
++--------+----------+------------+---------+-------------+---------+--------+--------------------+
+| emp_no | emp_name | dob        | address | mobile_no   | dept_no | salary | Designation        |
++--------+----------+------------+---------+-------------+---------+--------+--------------------+
+| emp1   | John     | 2000-12-21 | aaa     | 1234567890  | D01     |  55000 | Manager            |
+| emp2   | Alice    | 2001-11-22 | bbb     | 0987654321  | D02     |  48000 | Assistant Manager  |
+| emp3   | Bob      | 2002-10-23 | ccc     | 1212121212  | D02     |  35000 | HR Executive       |
+| emp4   | Charlie  | 2003-09-24 | ddd     | 2222222222  | D03     |  38000 | Marketing Analyst  |
+| emp5   | David    | 2004-08-25 | eee     | 3333333333  | D04     |  42000 | Software Engineer  |
+| emp6   | Emma     | 2005-07-26 | fff     | 4444444444  | D02     |  50000 | Manager            |
+| emp7   | Frank    | 2006-06-27 | hhh     | 55555555555 | D05     |  32000 | Computer Assistant |
+| emp8   | Grace    | 2007-05-28 | iii     | 6666666666  | D02     |  30000 | HR Executive       |
+| emp9   | Henry    | 2008-04-29 | jjj     | 4444444444  | D01     |  40000 | Accountant         |
++--------+----------+------------+---------+-------------+---------+--------+--------------------+
+9 rows in set (0.00 sec)
+
+mysql> SELECT * FROM Employee WHERE emp_no IN ('emp1', 'emp2', 'emp6');
++--------+----------+------------+---------+------------+---------+--------+-------------------+
+| emp_no | emp_name | dob        | address | mobile_no  | dept_no | salary | Designation       |
++--------+----------+------------+---------+------------+---------+--------+-------------------+
+| emp1   | John     | 2000-12-21 | aaa     | 1234567890 | D01     |  55000 | Manager           |
+| emp2   | Alice    | 2001-11-22 | bbb     | 0987654321 | D02     |  48000 | Assistant Manager |
+| emp6   | Emma     | 2005-07-26 | fff     | 4444444444 | D02     |  50000 | Manager           |
++--------+----------+------------+---------+------------+---------+--------+-------------------+
+3 rows in set (0.00 sec)
+
+mysql> SELECT emp_name, emp_no FROM Employee WHERE salary BETWEEN 120000 AND
+    -> 300000;
+Empty set (0.00 sec)
+
+mysql> SELECT * FROM Employee WHERE designation IN ('Manager', 'Computer Assistant');
++--------+----------+------------+---------+-------------+---------+--------+--------------------+
+| emp_no | emp_name | dob        | address | mobile_no   | dept_no | salary | Designation        |
++--------+----------+------------+---------+-------------+---------+--------+--------------------+
+| emp1   | John     | 2000-12-21 | aaa     | 1234567890  | D01     |  55000 | Manager            |
+| emp10  | Ivy      | 2009-03-30 | kkk     | 3333333333  | D03     |   7000 | Manager            |
+| emp6   | Emma     | 2005-07-26 | fff     | 4444444444  | D02     |  50000 | Manager            |
+| emp7   | Frank    | 2006-06-27 | hhh     | 55555555555 | D05     |  32000 | Computer Assistant |
++--------+----------+------------+---------+-------------+---------+--------+--------------------+
+4 rows in set (0.00 sec)
+
+mysql> SELECT dept_no, COUNT(*) AS employee_count FROM Employee GROUP BY dept_no;
++---------+----------------+
+| dept_no | employee_count |
++---------+----------------+
+| D01     |              2 |
+| D02     |              4 |
+| D03     |              2 |
+| D04     |              1 |
+| D05     |              1 |
++---------+----------------+
+5 rows in set (0.04 sec)
+
+mysql> SELECT dept_no, AVG(salary) AS average_salary FROM Employee GROUP BY dept_no;
++---------+----------------+
+| dept_no | average_salary |
++---------+----------------+
+| D01     |     47500.0000 |
+| D02     |     40750.0000 |
+| D03     |     22500.0000 |
+| D04     |     42000.0000 |
+| D05     |     32000.0000 |
++---------+----------------+
+5 rows in set (0.00 sec)
+
+mysql> SELECT dept_no, SUM(salary) AS total_salary FROM Employee GROUP BY dept_no;
++---------+--------------+
+| dept_no | total_salary |
++---------+--------------+
+| D01     |        95000 |
+| D02     |       163000 |
+| D03     |        45000 |
+| D04     |        42000 |
+| D05     |        32000 |
++---------+--------------+
+5 rows in set (0.00 sec)
+
+mysql> SELECT dept_no, MAX(salary) AS top_salary, MIN(salary) AS lowest_salary FROM
+    -> Employee GROUP BY dept_no;
++---------+------------+---------------+
+| dept_no | top_salary | lowest_salary |
++---------+------------+---------------+
+| D01     |      55000 |         40000 |
+| D02     |      50000 |         30000 |
+| D03     |      38000 |          7000 |
+| D04     |      42000 |         42000 |
+| D05     |      32000 |         32000 |
++---------+------------+---------------+
+5 rows in set (0.00 sec)
+
+mysql> SELECT AVG(salary) AS average_salary FROM Employee WHERE dept_no != 'D05';
++----------------+
+| average_salary |
++----------------+
+|     38333.3333 |
++----------------+
+1 row in set (0.00 sec)
+
+mysql> SELECT dept_no, AVG(salary) AS average_salary FROM Employee WHERE dept_no !=
+    -> 'D01' GROUP BY dept_no HAVING AVG(salary) > 20000 ORDER BY average_salary ASC;
++---------+----------------+
+| dept_no | average_salary |
++---------+----------------+
+| D03     |     22500.0000 |
+| D05     |     32000.0000 |
+| D02     |     40750.0000 |
+| D04     |     42000.0000 |
++---------+----------------+
+4 rows in set (0.00 sec)
+
+mysql> 
+
