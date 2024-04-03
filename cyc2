@@ -1,0 +1,826 @@
+mysql> create database schema;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'schema' at line 1
+mysql> show databases;
++--------------------+
+| Database           |
++--------------------+
+| demo               |
+| information_schema |
+| mysql              |
+| ogdb               |
+| performance_schema |
+| sys                |
++--------------------+
+6 rows in set (0.00 sec)
+
+mysql> create database schema;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'schema' at line 1
+mysql> create database schema;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'schema' at line 1
+mysql> create database dbschema;
+Query OK, 1 row affected (0.05 sec)
+
+mysql> create database company;
+Query OK, 1 row affected (0.05 sec)
+
+mysql> drop database company;
+Query OK, 0 rows affected (0.06 sec)
+
+mysql> show databases;
++--------------------+
+| Database           |
++--------------------+
+| dbschema           |
+| demo               |
+| information_schema |
+| mysql              |
+| ogdb               |
+| performance_schema |
+| sys                |
++--------------------+
+7 rows in set (0.00 sec)
+
+mysql> use dbschema;
+Database changed
+mysql> CREATE TABLE regions (
+    -> region_id INT (11) AUTO_INCREMENT PRIMARY KEY,
+    -> region_name VARCHAR (25) DEFAULT NULL
+    -> );
+Query OK, 0 rows affected, 1 warning (0.03 sec)
+
+mysql> CREATE TABLE countries (
+    -> countriescountry_id CHAR (2) PRIMARY KEY,
+    -> country_name VARCHAR (40) DEFAULT NULL,
+    -> region_id INT (11) NOT NULL,
+    -> FOREIGN KEY (region_id) REFERENCES regions (region_id) ON DELETE CASCADE ON UPDATE CASCADE
+    -> );
+Query OK, 0 rows affected, 1 warning (0.07 sec)
+
+mysql> CREATE TABLE locations (
+    -> location_id INT (11) AUTO_INCREMENT PRIMARY KEY,
+    -> street_address VARCHAR (40) DEFAULT NULL,
+    -> postal_code VARCHAR (12) DEFAULT NULL,
+    -> city VARCHAR (30) NOT NULL,
+    -> state_province VARCHAR (25) DEFAULT NULL,
+    -> country_id CHAR (2) NOT NULL,
+    -> FOREIGN KEY (country_id) REFERENCES countries (country_id) ON DELETE CASCADE ON UPDATE CASCADE
+    -> );
+ERROR 3734 (HY000): Failed to add the foreign key constraint. Missing column 'country_id' for constraint 'locations_ibfk_1' in the referenced table 'countries'
+mysql> select * from locations;
+ERROR 1146 (42S02): Table 'dbschema.locations' doesn't exist
+ERROR 3734 (HY000): Failed to add the foreign key constraint. Missing column 'country_id' for constraint 'locations_ibfk_1' in the referenced table 'countries'
+mysql> 146 (42S02): Table 'dbschema.dbschema' doesn't exist
+mysql> CREATE TABLE locations ( location_id INT (11) AUTO_INCREMENT PRIMARY KEY, street_address VARCHAR (40) DEFAULT NULL, postal_code VARCHAR (12) DEFAULT NULL, city VARCHAR (30) NOT NULL, state_provinc^CVARCHAR (25) DEFAULT NULL, country_id CHAR (2) NOT NULL, FOREIGN KEY (country_id) REFERENCES countries (country_id) ON DELETE CASCADE ON UPDATE CASCADE );
+mysql> drop database dbschema;
+Query OK, 2 rows affected (0.06 sec)
+
+mysql> create database schemadb;
+Query OK, 1 row affected (0.04 sec)
+
+mysql> use schemadb;
+Database changed
+mysql> CREATE TABLE jobs (
+    -> job_id INT (11) AUTO_INCREMENT PRIMARY KEY,
+    -> job_title VARCHAR (35) NOT NULL,
+    -> min_salary DECIMAL (8, 2) DEFAULT NULL,
+    -> max_salary DECIMAL (8, 2) DEFAULT NULL
+    -> );
+Query OK, 0 rows affected, 1 warning (0.06 sec)
+
+mysql> CREATE TABLE regions (region_id INT (11) AUTO_INCREMENT PRIMARY KEY,region_name VARCHAR (25) DEFAULT NULL);
+Query OK, 0 rows affected, 1 warning (0.06 sec)
+
+mysql> CREATE TABLE countries (
+    -> countriescountry_id CHAR (2) PRIMARY KEY,
+    -> country_name VARCHAR (40) DEFAULT NULL,
+    -> region_id INT (11) NOT NULL,
+    -> FOREIGN KEY (region_id) REFERENCES regions (region_id) ON DELETE CASCADE ON UPDATE CASCADE
+    -> );
+Query OK, 0 rows affected, 1 warning (0.04 sec)
+
+mysql> CREATE TABLE locations (
+    -> location_id INT (11) AUTO_INCREMENT PRIMARY KEY,
+    -> street_address VARCHAR (40) DEFAULT NULL,
+    -> postal_code VARCHAR (12) DEFAULT NULL,
+    -> city VARCHAR (30) NOT NULL,
+    -> state_province VARCHAR (25) DEFAULT NULL,
+    -> country_id CHAR (2) NOT NULL,
+    -> FOREIGN KEY (country_id) REFERENCES countries (country_id) ON DELETE CASCADE ON UPDATE CASCADE
+    -> );
+ERROR 3734 (HY000): Failed to add the foreign key constraint. Missing column 'country_id' for constraint 'locations_ibfk_1' in the referenced table 'countries'
+mysql> CREATE TABLE locations ( location_id INT (11) AUTO_INCREMENT PRIMARY KEY, street_address VARCHAR (40) DEFAULT NULL, postal_code VARCHAR (12) DEFAULT NULL, city VARCHAR (30) NOT NULL, state_province VARCHAR (25) DEFAULT NULL, country_id CHAR (2) NOT NULL, FOREIGN KEY (country_id) REFERENCES countries (country_id) ON DELETE CASCADE ON UPDATE CASCADE );
+ERROR 3734 (HY000): Failed to add the foreign key constraint. Missing column 'country_id' for constraint 'locations_ibfk_1' in the referenced table 'countries'
+mysql> drop table countries;
+Query OK, 0 rows affected (0.01 sec)
+
+mysql> CREATE TABLE countries (country_id CHAR (2) PRIMARY KEY,
+    -> country_name VARCHAR (40) DEFAULT NULL,
+    -> region_id INT (11) NOT NULL,
+    -> FOREIGN KEY (region_id) REFERENCES regions (region_id) ON DELETE CASCADE ON UPDATE CASCADE
+    -> );
+Query OK, 0 rows affected, 1 warning (0.08 sec)
+
+mysql> CREATE TABLE locations (
+    -> location_id INT (11) AUTO_INCREMENT PRIMARY KEY,
+    -> street_address VARCHAR (40) DEFAULT NULL,
+    -> postal_code VARCHAR (12) DEFAULT NULL,
+    -> city VARCHAR (30) NOT NULL,
+    -> state_province VARCHAR (25) DEFAULT NULL,
+    -> country_id CHAR (2) NOT NULL,
+    -> FOREIGN KEY (country_id) REFERENCES countries (country_id) ON DELETE CASCADE ON UPDATE CASCADE
+    -> );
+Query OK, 0 rows affected, 1 warning (0.07 sec)
+
+mysql> CREATE TABLE departments (
+    -> department_id INT (11) AUTO_INCREMENT PRIMARY KEY,
+    -> department_name VARCHAR (30) NOT NULL,
+    -> location_id INT (11) DEFAULT NULL,
+    -> FOREIGN KEY (location_id) REFERENCES locations (location_id) ON DELETE CASCADE ON UPDATE CASCADE
+    -> );
+Query OK, 0 rows affected, 2 warnings (0.06 sec)
+
+mysql> CREATE TABLE employees (
+    -> employee_id INT (11) AUTO_INCREMENT PRIMARY KEY,
+    -> first_name VARCHAR (20) DEFAULT NULL,
+    -> last_name VARCHAR (25) NOT NULL,
+    -> email VARCHAR (100) NOT NULL,
+    -> phone_number VARCHAR (20) DEFAULT NULL,
+    -> hire_date DATE NOT NULL,
+    -> job_id INT (11) NOT NULL,
+    -> salary INT(10) NOT NULL,
+    -> manager_id INT (11) DEFAULT NULL,
+    -> department_id INT (11) DEFAULT NULL,
+    -> FOREIGN KEY (job_id) REFERENCES jobs (job_id) ON DELETE CASCADE ON UPDATE CASCADE,
+    -> FOREIGN KEY (department_id) REFERENCES departments (department_id) ON DELETE CASCADE ON UPDATE CASCADE,
+    -> FOREIGN KEY (manager_id) REFERENCES employees (employee_id)
+    -> );
+Query OK, 0 rows affected, 5 warnings (0.08 sec)
+
+mysql> CREATE TABLE dependents (
+    -> dependent_id INT (11) AUTO_INCREMENT PRIMARY KEY,
+    -> first_name VARCHAR (50) NOT NULL,
+    -> last_name VARCHAR (50) NOT NULL,
+    -> relationship VARCHAR (25) NOT NULL,
+    -> employee_id INT (11) NOT NULL,
+    -> FOREIGN KEY (employee_id) REFERENCES employees (employee_id) ON DELETE CASCADE ON UPDATE CASCADE
+    -> );
+Query OK, 0 rows affected, 2 warnings (0.02 sec)
+
+mysql> desc dependants;
+ERROR 1146 (42S02): Table 'schemadb.dependants' doesn't exist
+mysql> desc employees;
++---------------+--------------+------+-----+---------+----------------+
+| Field         | Type         | Null | Key | Default | Extra          |
++---------------+--------------+------+-----+---------+----------------+
+| employee_id   | int          | NO   | PRI | NULL    | auto_increment |
+| first_name    | varchar(20)  | YES  |     | NULL    |                |
+| last_name     | varchar(25)  | NO   |     | NULL    |                |
+| email         | varchar(100) | NO   |     | NULL    |                |
+| phone_number  | varchar(20)  | YES  |     | NULL    |                |
+| hire_date     | date         | NO   |     | NULL    |                |
+| job_id        | int          | NO   | MUL | NULL    |                |
+| salary        | int          | NO   |     | NULL    |                |
+| manager_id    | int          | YES  | MUL | NULL    |                |
+| department_id | int          | YES  | MUL | NULL    |                |
++---------------+--------------+------+-----+---------+----------------+
+10 rows in set (0.01 sec)
+
+mysql> desc dependents;
++--------------+-------------+------+-----+---------+----------------+
+| Field        | Type        | Null | Key | Default | Extra          |
++--------------+-------------+------+-----+---------+----------------+
+| dependent_id | int         | NO   | PRI | NULL    | auto_increment |
+| first_name   | varchar(50) | NO   |     | NULL    |                |
+| last_name    | varchar(50) | NO   |     | NULL    |                |
+| relationship | varchar(25) | NO   |     | NULL    |                |
+| employee_id  | int         | NO   | MUL | NULL    |                |
++--------------+-------------+------+-----+---------+----------------+
+5 rows in set (0.00 sec)
+
+mysql> desc jobs;
++------------+--------------+------+-----+---------+----------------+
+| Field      | Type         | Null | Key | Default | Extra          |
++------------+--------------+------+-----+---------+----------------+
+| job_id     | int          | NO   | PRI | NULL    | auto_increment |
+| job_title  | varchar(35)  | NO   |     | NULL    |                |
+| min_salary | decimal(8,2) | YES  |     | NULL    |                |
+| max_salary | decimal(8,2) | YES  |     | NULL    |                |
++------------+--------------+------+-----+---------+----------------+
+4 rows in set (0.00 sec)
+
+mysql> desc regions;
++-------------+-------------+------+-----+---------+----------------+
+| Field       | Type        | Null | Key | Default | Extra          |
++-------------+-------------+------+-----+---------+----------------+
+| region_id   | int         | NO   | PRI | NULL    | auto_increment |
+| region_name | varchar(25) | YES  |     | NULL    |                |
++-------------+-------------+------+-----+---------+----------------+
+2 rows in set (0.00 sec)
+
+mysql> desc country;
+ERROR 1146 (42S02): Table 'schemadb.country' doesn't exist
+mysql> desc countries;
++--------------+-------------+------+-----+---------+-------+
+| Field        | Type        | Null | Key | Default | Extra |
++--------------+-------------+------+-----+---------+-------+
+| country_id   | char(2)     | NO   | PRI | NULL    |       |
+| country_name | varchar(40) | YES  |     | NULL    |       |
+| region_id    | int         | NO   | MUL | NULL    |       |
++--------------+-------------+------+-----+---------+-------+
+3 rows in set (0.00 sec)
+
+mysql> desc locations;
++----------------+-------------+------+-----+---------+----------------+
+| Field          | Type        | Null | Key | Default | Extra          |
++----------------+-------------+------+-----+---------+----------------+
+| location_id    | int         | NO   | PRI | NULL    | auto_increment |
+| street_address | varchar(40) | YES  |     | NULL    |                |
+| postal_code    | varchar(12) | YES  |     | NULL    |                |
+| city           | varchar(30) | NO   |     | NULL    |                |
+| state_province | varchar(25) | YES  |     | NULL    |                |
+| country_id     | char(2)     | NO   | MUL | NULL    |                |
++----------------+-------------+------+-----+---------+----------------+
+6 rows in set (0.00 sec)
+
+mysql> desc departments;
++-----------------+-------------+------+-----+---------+----------------+
+| Field           | Type        | Null | Key | Default | Extra          |
++-----------------+-------------+------+-----+---------+----------------+
+| department_id   | int         | NO   | PRI | NULL    | auto_increment |
+| department_name | varchar(30) | NO   |     | NULL    |                |
+| location_id     | int         | YES  | MUL | NULL    |                |
++-----------------+-------------+------+-----+---------+----------------+
+3 rows in set (0.00 sec)
+
+mysql> desc employees;
++---------------+--------------+------+-----+---------+----------------+
+| Field         | Type         | Null | Key | Default | Extra          |
++---------------+--------------+------+-----+---------+----------------+
+| employee_id   | int          | NO   | PRI | NULL    | auto_increment |
+| first_name    | varchar(20)  | YES  |     | NULL    |                |
+| last_name     | varchar(25)  | NO   |     | NULL    |                |
+| email         | varchar(100) | NO   |     | NULL    |                |
+| phone_number  | varchar(20)  | YES  |     | NULL    |                |
+| hire_date     | date         | NO   |     | NULL    |                |
+| job_id        | int          | NO   | MUL | NULL    |                |
+| salary        | int          | NO   |     | NULL    |                |
+| manager_id    | int          | YES  | MUL | NULL    |                |
+| department_id | int          | YES  | MUL | NULL    |                |
++---------------+--------------+------+-----+---------+----------------+
+10 rows in set (0.01 sec)
+
+mysql> desc dependents;
++--------------+-------------+------+-----+---------+----------------+
+| Field        | Type        | Null | Key | Default | Extra          |
++--------------+-------------+------+-----+---------+----------------+
+| dependent_id | int         | NO   | PRI | NULL    | auto_increment |
+| first_name   | varchar(50) | NO   |     | NULL    |                |
+| last_name    | varchar(50) | NO   |     | NULL    |                |
+| relationship | varchar(25) | NO   |     | NULL    |                |
+| employee_id  | int         | NO   | MUL | NULL    |                |
++--------------+-------------+------+-----+---------+----------------+
+5 rows in set (0.00 sec)
+
+mysql> INSERT INTO regions(region_id,region_name) VALUES (1,'Europe');
+Query OK, 1 row affected (0.06 sec)
+
+mysql> INSERT INTO regions(region_id,region_name) VALUES (2,'Americas');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> INSERT INTO regions(region_id,region_name) VALUES (3,'Asia');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> INSERT INTO regions(region_id,region_name) VALUES (4,'Middle East and Africa');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> INSERT INTO countries(country_id,country_name,region_id) VALUES ('AR','Argentina',2),
+    -> INSERT INTO countries(country_id,country_name,region_id) VALUES ('AU','Australia',3),
+    -> INSERT INTO countries(country_id,country_name,region_id) VALUES ('BE','Belgium',1),
+    -> INSERT INTO countries(country_id,country_name,region_id) VALUES ('BR','Brazil',2),
+    -> INSERT INTO countries(country_id,country_name,region_id) VALUES ('CA','Canada',2),
+    -> INSERT INTO countries(country_id,country_name,region_id) VALUES ('CH','Switzerland',1),
+    -> INSERT INTO countries(country_id,country_name,region_id) VALUES ('CN','China',3),
+    -> INSERT INTO countries(country_id,country_name,region_id) VALUES ('DE','Germany',1),
+    -> INSERT INTO countries(country_id,country_name,region_id) VALUES ('DK','Denmark',1),
+    -> INSERT INTO countries(country_id,country_name,region_id) VALUES ('EG','Egypt',4),
+    -> INSERT INTO countries(country_id,country_name,region_id) VALUES ('FR','France',1),
+    -> INSERT INTO countries(country_id,country_name,region_id) VALUES ('HK','HongKong',3),
+    -> INSERT INTO countries(country_id,country_name,region_id) VALUES ('IL','Israel',4),
+    -> INSERT INTO countries(country_id,country_name,region_id) VALUES ('IN','India',3),
+    -> INSERT INTO countries(country_id,country_name,region_id) VALUES ('IT','Italy',1),
+    -> INSERT INTO countries(country_id,country_name,region_id) VALUES ('JP','Japan',3),
+    -> INSERT INTO countries(country_id,country_name,region_id) VALUES ('KW','Kuwait',4);
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'INSERT INTO countries(country_id,country_name,region_id) VALUES ('AU','Australia' at line 2
+mysql> ('AU','Australia',3),('BE','Belgium',1),('BR','Brazil',2),('CA','Canada',2),('CH','Switzerland',1),('CN','China',3),('DE','Germany',1),('DK','Denmark',1),
+    -> ('EG','Egypt',4),;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near ''AU','Australia',3),('BE','Belgium',1),('BR','Brazil',2),('CA','Canada',2),('CH'' at line 1
+mysql> ('AU','Australia',3),('BE','Belgium',1),('BR','Brazil',2),('CA','Canada',2),('CH','Switzerland',1),('CN','China',3),('DE','Germany',1),('DK','Denmark',1), ('EG','Egypt',4);
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near ''AU','Australia',3),('BE','Belgium',1),('BR','Brazil',2),('CA','Canada',2),('CH'' at line 1
+mysql> ('EG','Egypt',4),;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near ''EG','Egypt',4),' at line 1
+mysql> INSERT INTO countries(country_id,country_name,region_id) VALUES ('AR','Argentina',2),
+    -> ('AU','Australia',3),('BE','Belgium',1),('BR','Brazil',2),('CA','Canada',2),('CH','Switzerland',1),('CN','China',3),('DE','Germany',1),('DK','Denmark',1),
+    -> ('EG','Egypt',4);
+Query OK, 10 rows affected (0.04 sec)
+Records: 10  Duplicates: 0  Warnings: 0
+
+mysql> select * from countries;
++------------+--------------+-----------+
+| country_id | country_name | region_id |
++------------+--------------+-----------+
+| AR         | Argentina    |         2 |
+| AU         | Australia    |         3 |
+| BE         | Belgium      |         1 |
+| BR         | Brazil       |         2 |
+| CA         | Canada       |         2 |
+| CH         | Switzerland  |         1 |
+| CN         | China        |         3 |
+| DE         | Germany      |         1 |
+| DK         | Denmark      |         1 |
+| EG         | Egypt        |         4 |
++------------+--------------+-----------+
+10 rows in set (0.00 sec)
+
+mysql> select * from regions;
++-----------+------------------------+
+| region_id | region_name            |
++-----------+------------------------+
+|         1 | Europe                 |
+|         2 | Americas               |
+|         3 | Asia                   |
+|         4 | Middle East and Africa |
++-----------+------------------------+
+4 rows in set (0.00 sec)
+
+mysql> INSERT INTO jobs(job_id,job_title,min_salary,max_salary)VALUES(1,'Public Accountant',4200.00,9000.00),(2,'Accounting Manager',8200.00,16000.00),(3,'Administration Assistant',3000.00,6000.00),(4,'President',20000.00,40000.00),(5,'Administration Vice President',15000.00,30000.00),(6,'Accountant',4200.00,9000.00),(7,'Finance Manager',8200.00,16000.00),
+    -> (8,'Human Resources Representative',4000.00,9000.00),(9,'Programmer',4000.00,10000.00),
+    -> (10,'Marketing Manager',9000.00,15000.00);
+Query OK, 10 rows affected (0.04 sec)
+Records: 10  Duplicates: 0  Warnings: 0
+
+mysql> desc locations;
++----------------+-------------+------+-----+---------+----------------+
+| Field          | Type        | Null | Key | Default | Extra          |
++----------------+-------------+------+-----+---------+----------------+
+| location_id    | int         | NO   | PRI | NULL    | auto_increment |
+| street_address | varchar(40) | YES  |     | NULL    |                |
+| postal_code    | varchar(12) | YES  |     | NULL    |                |
+| city           | varchar(30) | NO   |     | NULL    |                |
+| state_province | varchar(25) | YES  |     | NULL    |                |
+| country_id     | char(2)     | NO   | MUL | NULL    |                |
++----------------+-------------+------+-----+---------+----------------+
+6 rows in set (0.01 sec)
+
+mysql> INSERT INTO jobs(job_id,job_title,min_salary,max_salary) VALUES (11,'Marketing Representative',4000.00,9000.00),
+    -> (12,'Public Relations Representative',4500.00,10500.00),
+    -> (13,'Purchasing Clerk',2500.00,5500.00),
+    -> (14,'Purchasing Manager',8000.00,15000.00),
+    -> (15,'Sales Manager',10000.00,20000.00),
+    -> (16,'Sales Representative',6000.00,12000.00),
+    -> (17,'Shipping Clerk',2500.00,5500.00),
+    -> (18,'Stock Clerk',2000.00,5000.00),
+    -> (19,'Stock Manager',5500.00,8500.00);
+Query OK, 9 rows affected (0.04 sec)
+Records: 9  Duplicates: 0  Warnings: 0
+
+mysql> select * from jobs;
++--------+---------------------------------+------------+------------+
+| job_id | job_title                       | min_salary | max_salary |
++--------+---------------------------------+------------+------------+
+|      1 | Public Accountant               |    4200.00 |    9000.00 |
+|      2 | Accounting Manager              |    8200.00 |   16000.00 |
+|      3 | Administration Assistant        |    3000.00 |    6000.00 |
+|      4 | President                       |   20000.00 |   40000.00 |
+|      5 | Administration Vice President   |   15000.00 |   30000.00 |
+|      6 | Accountant                      |    4200.00 |    9000.00 |
+|      7 | Finance Manager                 |    8200.00 |   16000.00 |
+|      8 | Human Resources Representative  |    4000.00 |    9000.00 |
+|      9 | Programmer                      |    4000.00 |   10000.00 |
+|     10 | Marketing Manager               |    9000.00 |   15000.00 |
+|     11 | Marketing Representative        |    4000.00 |    9000.00 |
+|     12 | Public Relations Representative |    4500.00 |   10500.00 |
+|     13 | Purchasing Clerk                |    2500.00 |    5500.00 |
+|     14 | Purchasing Manager              |    8000.00 |   15000.00 |
+|     15 | Sales Manager                   |   10000.00 |   20000.00 |
+|     16 | Sales Representative            |    6000.00 |   12000.00 |
+|     17 | Shipping Clerk                  |    2500.00 |    5500.00 |
+|     18 | Stock Clerk                     |    2000.00 |    5000.00 |
+|     19 | Stock Manager                   |    5500.00 |    8500.00 |
++--------+---------------------------------+------------+------------+
+19 rows in set (0.00 sec)
+
+mysql> INSERT INTO locations(location_id,street_address,postal_code,city,state_province,country_id) VALUES(1400,'2014 Jabberwocky Rd','26192','Southlake','Texas','US'),(1500,'2011 Interiors Blvd','99236','South San Francisco','California','US'),
+    -> (1700,'2004 Charade Rd','98199','Seattle','Washington','US'),
+    -> (1800,'147 Spadina Ave','M5V 2L7','Toronto','Ontario','CA'),
+    -> (2400,'8204 Arthur St',NULL,'London',NULL,'UK'),
+    -> (2500,'Magdalen Centre, The Oxford Science Park','OX9 9ZB','Oxford','Oxford','UK'),
+    -> (2700,'Schwanthalerstr. 7031','80925','Munich','Bavaria','DE');
+ERROR 1452 (23000): Cannot add or update a child row: a foreign key constraint fails (`schemadb`.`locations`, CONSTRAINT `locations_ibfk_1` FOREIGN KEY (`country_id`) REFERENCES `countries` (`country_id`) ON DELETE CASCADE ON UPDATE CASCADE)
+mysql> INSERT INTO locations(location_id,street_address,postal_code,city,state_province,country_id) VALUES(1400,'2014 Jabberwocky Rd','26192','Southlake','Texas','US'),(1500,'2011 Interiors Blvd','99236','South San Francisco','California','AR'), (1700,'2004 Charade Rd','98199','Seattle','Washington','US'), (1800,'147 Spadina Ave','M5V 2L7','Toronto','Ontario','CH'), (2400,'8204 Arthur St',NULL,'London',NULL,'AU'), (2500,'Magdalen Centre, The Oxford Science Park','OX9 9ZB','Oxford','Oxford','CA'), (2700,'Schwanthalerstr. 7031','80925','Munich','Bavaria','DE');
+ERROR 1452 (23000): Cannot add or update a child row: a foreign key constraint fails (`schemadb`.`locations`, CONSTRAINT `locations_ibfk_1` FOREIGN KEY (`country_id`) REFERENCES `countries` (`country_id`) ON DELETE CASCADE ON UPDATE CASCADE)
+mysql> INSERT INTO locations(location_id,street_address,postal_code,city,state_province,country_id) VALUES(1400,'2014 Jabberwocky Rd','26192','Southlake','Texas','CA');
+Query OK, 1 row affected (0.04 sec)
+
+mysql> INSERT INTO locations(location_id,street_address,postal_code,city,state_province,country_id) VALUES(1400,'2014 Jabberwocky Rd','26192','Southlake','Texas','BR');
+ERROR 1062 (23000): Duplicate entry '1400' for key 'locations.PRIMARY'
+mysql> INSERT INTO locations(location_id,street_address,postal_code,city,state_province,country_id) VALUES(1300,'2014 Jabberwocky Rd','26192','Southlake','Texas','BR');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> INSERT INTO locations(location_id,street_address,postal_code,city,state_province,country_id) VALUES(1200,'2014 Jabberwocky Rd','26192','Southlake','Texas','BE');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> INSERT INTO locations(location_id,street_address,postal_code,city,state_province,country_id) VALUES(1100,'2014 Jabberwocky Rd','26192','Southlake','Texas','AU');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> INSERT INTO locations(location_id,street_address,postal_code,city,state_province,country_id) VALUES(1000,'2014 Jabberwocky Rd','26192','Southlake','Texas','AR');
+Query OK, 1 row affected (0.04 sec)
+
+mysql> INSERT INTO locations(location_id,street_address,postal_code,city,state_province,country_id) VALUES(1500,'2014 Jabberwocky Rd','26192','Southlake','Texas','CH');
+Query OK, 1 row affected (0.04 sec)
+
+mysql> INSERT INTO locations(location_id,street_address,postal_code,city,state_province,country_id) VALUES(1600,'2014 Jabberwocky Rd','26192','Southlake','Texas','CN');
+Query OK, 1 row affected (0.04 sec)
+
+mysql> INSERT INTO locations(location_id,street_address,postal_code,city,state_province,country_id) VALUES(1700,'2014 Jabberwocky Rd','26192','Southlake','Texas','DE');
+Query OK, 1 row affected (0.04 sec)
+
+mysql> INSERT INTO locations(location_id,street_address,postal_code,city,state_province,country_id) VALUES(1800,'2014 Jabberwocky Rd','26192','Southlake','Texas','DK');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> INSERT INTO locations(location_id,street_address,postal_code,city,state_province,country_id) VALUES(1900,'2014 Jabberwocky Rd','26192','Southlake','Texas','EG');
+Query OK, 1 row affected (0.04 sec)
+
+mysql> SELECT * FROM locations;
++-------------+---------------------+-------------+-----------+----------------+------------+
+| location_id | street_address      | postal_code | city      | state_province | country_id |
++-------------+---------------------+-------------+-----------+----------------+------------+
+|        1000 | 2014 Jabberwocky Rd | 26192       | Southlake | Texas          | AR         |
+|        1100 | 2014 Jabberwocky Rd | 26192       | Southlake | Texas          | AU         |
+|        1200 | 2014 Jabberwocky Rd | 26192       | Southlake | Texas          | BE         |
+|        1300 | 2014 Jabberwocky Rd | 26192       | Southlake | Texas          | BR         |
+|        1400 | 2014 Jabberwocky Rd | 26192       | Southlake | Texas          | CA         |
+|        1500 | 2014 Jabberwocky Rd | 26192       | Southlake | Texas          | CH         |
+|        1600 | 2014 Jabberwocky Rd | 26192       | Southlake | Texas          | CN         |
+|        1700 | 2014 Jabberwocky Rd | 26192       | Southlake | Texas          | DE         |
+|        1800 | 2014 Jabberwocky Rd | 26192       | Southlake | Texas          | DK         |
+|        1900 | 2014 Jabberwocky Rd | 26192       | Southlake | Texas          | EG         |
++-------------+---------------------+-------------+-----------+----------------+------------+
+10 rows in set (0.00 sec)
+
+mysql> drop table locations;
+ERROR 3730 (HY000): Cannot drop table 'locations' referenced by a foreign key constraint 'departments_ibfk_1' on table 'departments'.
+mysql> INSERT INTO locations(location_id,street_address,postal_code,city,state_province,country_id) VALUES(1400,'2014 Jabberwocky Rd','26192','Southlake','Texas','CN'),(1500,'2011 Interiors Blvd','99236','South San Francisco','California','CH'), (1700,'2004 Charade Rd','98199','Seattle','Washington','CA'), (1800,'147 Spadina Ave','M5V 2L7','Toronto','Ontario','BR'), (2400,'8204 Arthur St',NULL,'London',NULL,'BE'), (2500,'Magdalen Centre, The Oxford Science Park','OX9 9ZB','Oxford','Oxford','AU'), (2700,'Schwanthalerstr. 7031','80925','Munich','Bavaria','AR');
+ERROR 1062 (23000): Duplicate entry '1400' for key 'locations.PRIMARY'
+mysql> select * from locations;
++-------------+---------------------+-------------+-----------+----------------+------------+
+| location_id | street_address      | postal_code | city      | state_province | country_id |
++-------------+---------------------+-------------+-----------+----------------+------------+
+|        1000 | 2014 Jabberwocky Rd | 26192       | Southlake | Texas          | AR         |
+|        1100 | 2014 Jabberwocky Rd | 26192       | Southlake | Texas          | AU         |
+|        1200 | 2014 Jabberwocky Rd | 26192       | Southlake | Texas          | BE         |
+|        1300 | 2014 Jabberwocky Rd | 26192       | Southlake | Texas          | BR         |
+|        1400 | 2014 Jabberwocky Rd | 26192       | Southlake | Texas          | CA         |
+|        1500 | 2014 Jabberwocky Rd | 26192       | Southlake | Texas          | CH         |
+|        1600 | 2014 Jabberwocky Rd | 26192       | Southlake | Texas          | CN         |
+|        1700 | 2014 Jabberwocky Rd | 26192       | Southlake | Texas          | DE         |
+|        1800 | 2014 Jabberwocky Rd | 26192       | Southlake | Texas          | DK         |
+|        1900 | 2014 Jabberwocky Rd | 26192       | Southlake | Texas          | EG         |
++-------------+---------------------+-------------+-----------+----------------+------------+
+10 rows in set (0.00 sec)
+
+mysql> INSERT INTO employees(employee_id,first_name,last_name,email,phone_number,hire_date,job_id,salary,manager_id,department_id) VALUES (100,'Steven','King','steven.king@sqltutorial.org','515.123.4567','1987-06-17',4,24000.00,NULL,9),(101,'Neena','Kochhar','neena.kochhar@sqltutorial.org','515.123.4568','1989-09-21',5,17000.00,100,9),
+    -> (102,'Lex','De Haan','lex.de haan@sqltutorial.org','515.123.4569','1993-01-13',5,17000.00,100,9),
+    -> (103,'Alexander','Hunold','alexander.hunold@sqltutorial.org','590.423.4567','1990-01-03',9,9000.00,102,6),
+    -> (104,'Bruce','Ernst','bruce.ernst@sqltutorial.org','590.423.4568','1991-05-21',9,6000.00,103,6),
+    -> (105,'David','Austin','david.austin@sqltutorial.org','590.423.4569','1997-06-25',9,4800.00,103,6),
+    -> (106,'Valli','Pataballa','valli.pataballa@sqltutorial.org','590.423.4560','1998-02-05',9,4800.00,103,6),
+    -> (107,'Diana','Lorentz','diana.lorentz@sqltutorial.org','590.423.5567','1999-02-07',9,4200.00,103,6),
+    -> (108,'Nancy','Greenberg','nancy.greenberg@sqltutorial.org','515.124.4569','1994-08-17',7,12000.00,101,10),
+    -> (109,'Daniel','Faviet','daniel.faviet@sqltutorial.org','515.124.4169','1994-08-16',6,9000.00,108,10);
+ERROR 1452 (23000): Cannot add or update a child row: a foreign key constraint fails (`schemadb`.`employees`, CONSTRAINT `employees_ibfk_2` FOREIGN KEY (`department_id`) REFERENCES `departments` (`department_id`) ON DELETE CASCADE ON UPDATE CASCADE)
+mysql> desc department;
+ERROR 1146 (42S02): Table 'schemadb.department' doesn't exist
+mysql> desc departments;
++-----------------+-------------+------+-----+---------+----------------+
+| Field           | Type        | Null | Key | Default | Extra          |
++-----------------+-------------+------+-----+---------+----------------+
+| department_id   | int         | NO   | PRI | NULL    | auto_increment |
+| department_name | varchar(30) | NO   |     | NULL    |                |
+| location_id     | int         | YES  | MUL | NULL    |                |
++-----------------+-------------+------+-----+---------+----------------+
+3 rows in set (0.00 sec)
+
+mysql> INSERT INTO departments(department_id,department_name,location_id) VALUES (1000,'Administration',1700),
+    -> (1100,'Marketing',1800),
+    -> (1200,'Purchasing',1700),
+    -> (1300,'Human Resources',2400),
+    -> (1400,'Shipping',1500),
+    -> (1500,'IT',1400),
+    -> (1600,'Public Relations',2700),
+    -> (1700,'Sales',2500),
+    -> (1800,'Executive',1700),
+    -> (1900,'Finance',1700);
+ERROR 1452 (23000): Cannot add or update a child row: a foreign key constraint fails (`schemadb`.`departments`, CONSTRAINT `departments_ibfk_1` FOREIGN KEY (`location_id`) REFERENCES `locations` (`location_id`) ON DELETE CASCADE ON UPDATE CASCADE)
+mysql> INSERT INTO departments(department_id,department_name,location_id) VALUES (1700,'Administration',1000),
+    -> (1100,'Marketing',1100),
+    -> (1200,'Purchasing',1200),
+    -> (1300,'Human Resources',1300),
+    -> (1400,'Shipping',1400),
+    -> (1500,'IT',1500),
+    -> (1600,'Public Relations',1600),
+    -> (1700,'Sales',1700),
+    -> (1800,'Executive',1800),
+    -> (1900,'Finance',1900);
+ERROR 1062 (23000): Duplicate entry '1700' for key 'departments.PRIMARY'
+mysql> select * from departments;
+Empty set (0.00 sec)
+
+mysql> INSERT INTO departments(department_id,department_name,location_id) VALUES (1700,'Administration',1000), (1100,'Marketing',1100), (1200,'Purchasing',1200), (1300,'Human Resources',1300), (1400,'Shipping',1400), (1500,'IT',1500), (1600,'Public Relations',1600), (1700,'Sales',1700), (1800,'Executive',1800), (1900,'Finance',1900);
+ERROR 1062 (23000): Duplicate entry '1700' for key 'departments.PRIMARY'
+mysql> INSERT INTO departments(department_id,department_name,location_id) VALUES (1000,'Administration',1000), (1100,'Marketing',1100), (1200,'Purchasing',1200), (1300,'Human Resources',1300), (1400,'Shipping',1400), (1500,'IT',1500), (1600,'Public Relations',1600), (1700,'Sales',1700), (1800,'Executive',1800), (1900,'Finance',1900);
+Query OK, 10 rows affected (0.01 sec)
+Records: 10  Duplicates: 0  Warnings: 0
+
+mysql> INSERT INTO employees(employee_id,first_name,last_name,email,phone_number,hire_date,job_id,salary,manager_id,department_id) VALUES (100,'Steven','King','steven.king@sqltutorial.org','515.123.4567','1987-06-17',4,24000.00,NULL,9),(101,'Neena','Kochhar','neena.kochhar@sqltutorial.org','515.123.4568','1989-09-21',5,17000.00,100,9),
+    -> (102,'Lex','De Haan','lex.de haan@sqltutorial.org','515.123.4569','1993-01-13',5,17000.00,100,9),
+    -> (103,'Alexander','Hunold','alexander.hunold@sqltutorial.org','590.423.4567','1990-01-03',9,9000.00,102,6),
+    -> (104,'Bruce','Ernst','bruce.ernst@sqltutorial.org','590.423.4568','1991-05-21',9,6000.00,103,6),
+    -> (105,'David','Austin','david.austin@sqltutorial.org','590.423.4569','1997-06-25',9,4800.00,103,6),
+    -> (106,'Valli','Pataballa','valli.pataballa@sqltutorial.org','590.423.4560','1998-02-05',9,4800.00,103,6),
+    -> (107,'Diana','Lorentz','diana.lorentz@sqltutorial.org','590.423.5567','1999-02-07',9,4200.00,103,6),
+    -> (108,'Nancy','Greenberg','nancy.greenberg@sqltutorial.org','515.124.4569','1994-08-17',7,12000.00,101,10),
+    -> (109,'Daniel','Faviet','daniel.faviet@sqltutorial.org','515.124.4169','1994-08-16',6,9000.00,108,10);
+ERROR 1452 (23000): Cannot add or update a child row: a foreign key constraint fails (`schemadb`.`employees`, CONSTRAINT `employees_ibfk_2` FOREIGN KEY (`department_id`) REFERENCES `departments` (`department_id`) ON DELETE CASCADE ON UPDATE CASCADE)
+mysql> select * from departments;
++---------------+------------------+-------------+
+| department_id | department_name  | location_id |
++---------------+------------------+-------------+
+|          1000 | Administration   |        1000 |
+|          1100 | Marketing        |        1100 |
+|          1200 | Purchasing       |        1200 |
+|          1300 | Human Resources  |        1300 |
+|          1400 | Shipping         |        1400 |
+|          1500 | IT               |        1500 |
+|          1600 | Public Relations |        1600 |
+|          1700 | Sales            |        1700 |
+|          1800 | Executive        |        1800 |
+|          1900 | Finance          |        1900 |
++---------------+------------------+-------------+
+10 rows in set (0.00 sec)
+
+mysql> INSERT INTO employees(employee_id,first_name,last_name,email,phone_number,hire_date,job_id,salary,manager_id,department_id) VALUES (100,'Steven','King','steven.king@sqltutorial.org','515.123.4567','1987-06-17',4,24000.00,NULL,1000),(101,'Neena','Kochhar','neena.kochhar@sqltutorial.org','515.123.4568','1989-09-21',5,17000.00,100,1100), (102,'Lex','De Haan','lex.de haan@sqltutorial.org','515.123.4569','1993-01-13',5,17000.00,100,1200), (103,'Alexander','Hunold','alexander.hunold@sqltutorial.org','590.423.4567','1990-01-03',9,9000.00,102,1300), (104,'Bruce','Ernst','bruce.ernst@sqltutorial.org','590.423.4568','1991-05-21',9,6000.00,103,1400), (105,'David','Austin','david.austin@sqltutorial.org','590.423.4569','1997-06-25',9,4800.00,103,1500), (106,'Valli','Pataballa','valli.pataballa@sqltutorial.org','590.423.4560','1998-02-05',9,4800.00,103,1600), (107,'Diana','Lorentz','diana.lorentz@sqltutorial.org','590.423.5567','1999-02-07',9,4200.00,103,1700), (108,'Nancy','Greenberg','nancy.greenberg@sqltutorial.org','515.124.4569','1994-08-17',7,12000.00,101,1800), (109,'Daniel','Faviet','daniel.faviet@sqltutorial.org','515.124.4169','1994-08-16',6,9000.00,108,1900);
+Query OK, 10 rows affected (0.01 sec)
+Records: 10  Duplicates: 0  Warnings: 0
+
+mysql> select * from employees;
++-------------+------------+-----------+----------------------------------+--------------+------------+--------+--------+------------+---------------+
+| employee_id | first_name | last_name | email                            | phone_number | hire_date  | job_id | salary | manager_id | department_id |
++-------------+------------+-----------+----------------------------------+--------------+------------+--------+--------+------------+---------------+
+|         100 | Steven     | King      | steven.king@sqltutorial.org      | 515.123.4567 | 1987-06-17 |      4 |  24000 |       NULL |          1000 |
+|         101 | Neena      | Kochhar   | neena.kochhar@sqltutorial.org    | 515.123.4568 | 1989-09-21 |      5 |  17000 |        100 |          1100 |
+|         102 | Lex        | De Haan   | lex.de haan@sqltutorial.org      | 515.123.4569 | 1993-01-13 |      5 |  17000 |        100 |          1200 |
+|         103 | Alexander  | Hunold    | alexander.hunold@sqltutorial.org | 590.423.4567 | 1990-01-03 |      9 |   9000 |        102 |          1300 |
+|         104 | Bruce      | Ernst     | bruce.ernst@sqltutorial.org      | 590.423.4568 | 1991-05-21 |      9 |   6000 |        103 |          1400 |
+|         105 | David      | Austin    | david.austin@sqltutorial.org     | 590.423.4569 | 1997-06-25 |      9 |   4800 |        103 |          1500 |
+|         106 | Valli      | Pataballa | valli.pataballa@sqltutorial.org  | 590.423.4560 | 1998-02-05 |      9 |   4800 |        103 |          1600 |
+|         107 | Diana      | Lorentz   | diana.lorentz@sqltutorial.org    | 590.423.5567 | 1999-02-07 |      9 |   4200 |        103 |          1700 |
+|         108 | Nancy      | Greenberg | nancy.greenberg@sqltutorial.org  | 515.124.4569 | 1994-08-17 |      7 |  12000 |        101 |          1800 |
+|         109 | Daniel     | Faviet    | daniel.faviet@sqltutorial.org    | 515.124.4169 | 1994-08-16 |      6 |   9000 |        108 |          1900 |
++-------------+------------+-----------+----------------------------------+--------------+------------+--------+--------+------------+---------------+
+10 rows in set (0.00 sec)
+
+mysql> INSERT INTO dependents(dependent_id,first_name,last_name,relationship,employee_id) VALUES 
+    -> (1,'Penelope','Gietz','Child',206),
+    -> ((2,'Nick','Higgins','Child',205),
+    -> (3,'Ed','Whalen','Child',200),
+    -> (4,'Jennifer','King','Child',100),
+    -> (5,'Johnny','Kochhar','Child',101),
+    -> (6,'Bette','De Haan','Child',102),
+    -> (7,'Grace','Faviet','Child',109),
+    -> (8,'Matthew','Chen','Child',110),
+    -> (9,'Joe','Sciarra','Child',111),
+    -> (10,'Christian','Urman','Child',112);
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '' at line 11
+mysql> INSERT INTO dependents(dependent_id,first_name,last_name,relationship,employee_id) VALUES  (1,'Penelope','Gietz','Child',100), ((2,'Nick','Higgins','Child',101), (3,'Ed','Whalen','Child',102), (4,'Jennifer','King','Child',103), (5,'Johnny','Kochhar','Child',104), (6,'Bette','De Haan','Child',105), (7,'Grace','Faviet','Child',106), (8,'Matthew','Chen','Child',107), (9,'Joe','Sciarra','Child',108), (10,'Christian','Urman','Child',109);
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '' at line 1
+mysql> INSERT INTO dependents(dependent_id,first_name,last_name,relationship,employee_id) VALUES  (1,'Penelope','Gietz','Child',100);
+Query OK, 1 row affected (0.05 sec)
+
+mysql> INSERT INTO dependents(dependent_id,first_name,last_name,relationship,employee_id) VALUES  (2,'Nick','Higgins','Child',101);
+Query OK, 1 row affected (0.05 sec)
+
+mysql> INSERT INTO dependents(dependent_id,first_name,last_name,relationship,employee_id) VALUES  (3,'Ed','Whalen','Child',102);
+Query OK, 1 row affected (0.04 sec)
+
+mysql> INSERT INTO dependents(dependent_id,first_name,last_name,relationship,employee_id) VALUES  (4,'Jennifer','King','Child',103);
+Query OK, 1 row affected (0.04 sec)
+
+mysql> INSERT INTO dependents(dependent_id,first_name,last_name,relationship,employee_id) VALUES  (5,'Johnny','Kochhar','Child',104);
+Query OK, 1 row affected (0.04 sec)
+
+mysql> INSERT INTO dependents(dependent_id,first_name,last_name,relationship,employee_id) VALUES  (6,'Bette','De Haan','Child',105);
+Query OK, 1 row affected (0.05 sec)
+
+mysql> INSERT INTO dependents(dependent_id,first_name,last_name,relationship,employee_id) VALUES  (7,'Grace','Faviet','Child',106);
+Query OK, 1 row affected (0.05 sec)
+
+mysql> INSERT INTO dependents(dependent_id,first_name,last_name,relationship,employee_id) VALUES  (8,'Matthew','Chen','Child',107);
+Query OK, 1 row affected (0.04 sec)
+
+mysql> INSERT INTO dependents(dependent_id,first_name,last_name,relationship,employee_id) VALUES  (9,'Joe','Sciarra','Child',108);
+Query OK, 1 row affected (0.04 sec)
+
+mysql> INSERT INTO dependents(dependent_id,first_name,last_name,relationship,employee_id) VALUES  (10,'Christian','Urman','Child',109);
+Query OK, 1 row affected (0.05 sec)
+
+mysql> show tables;
++--------------------+
+| Tables_in_schemadb |
++--------------------+
+| countries          |
+| departments        |
+| dependents         |
+| employees          |
+| jobs               |
+| locations          |
+| regions            |
++--------------------+
+7 rows in set (0.00 sec)
+
+mysql> select * from countries;
++------------+--------------+-----------+
+| country_id | country_name | region_id |
++------------+--------------+-----------+
+| AR         | Argentina    |         2 |
+| AU         | Australia    |         3 |
+| BE         | Belgium      |         1 |
+| BR         | Brazil       |         2 |
+| CA         | Canada       |         2 |
+| CH         | Switzerland  |         1 |
+| CN         | China        |         3 |
+| DE         | Germany      |         1 |
+| DK         | Denmark      |         1 |
+| EG         | Egypt        |         4 |
++------------+--------------+-----------+
+10 rows in set (0.00 sec)
+
+mysql> select * from departments;
++---------------+------------------+-------------+
+| department_id | department_name  | location_id |
++---------------+------------------+-------------+
+|          1000 | Administration   |        1000 |
+|          1100 | Marketing        |        1100 |
+|          1200 | Purchasing       |        1200 |
+|          1300 | Human Resources  |        1300 |
+|          1400 | Shipping         |        1400 |
+|          1500 | IT               |        1500 |
+|          1600 | Public Relations |        1600 |
+|          1700 | Sales            |        1700 |
+|          1800 | Executive        |        1800 |
+|          1900 | Finance          |        1900 |
++---------------+------------------+-------------+
+10 rows in set (0.00 sec)
+
+mysql> select * from dependents;
++--------------+------------+-----------+--------------+-------------+
+| dependent_id | first_name | last_name | relationship | employee_id |
++--------------+------------+-----------+--------------+-------------+
+|            1 | Penelope   | Gietz     | Child        |         100 |
+|            2 | Nick       | Higgins   | Child        |         101 |
+|            3 | Ed         | Whalen    | Child        |         102 |
+|            4 | Jennifer   | King      | Child        |         103 |
+|            5 | Johnny     | Kochhar   | Child        |         104 |
+|            6 | Bette      | De Haan   | Child        |         105 |
+|            7 | Grace      | Faviet    | Child        |         106 |
+|            8 | Matthew    | Chen      | Child        |         107 |
+|            9 | Joe        | Sciarra   | Child        |         108 |
+|           10 | Christian  | Urman     | Child        |         109 |
++--------------+------------+-----------+--------------+-------------+
+10 rows in set (0.00 sec)
+
+mysql> select * from employees;
++-------------+------------+-----------+----------------------------------+--------------+------------+--------+--------+------------+---------------+
+| employee_id | first_name | last_name | email                            | phone_number | hire_date  | job_id | salary | manager_id | department_id |
++-------------+------------+-----------+----------------------------------+--------------+------------+--------+--------+------------+---------------+
+|         100 | Steven     | King      | steven.king@sqltutorial.org      | 515.123.4567 | 1987-06-17 |      4 |  24000 |       NULL |          1000 |
+|         101 | Neena      | Kochhar   | neena.kochhar@sqltutorial.org    | 515.123.4568 | 1989-09-21 |      5 |  17000 |        100 |          1100 |
+|         102 | Lex        | De Haan   | lex.de haan@sqltutorial.org      | 515.123.4569 | 1993-01-13 |      5 |  17000 |        100 |          1200 |
+|         103 | Alexander  | Hunold    | alexander.hunold@sqltutorial.org | 590.423.4567 | 1990-01-03 |      9 |   9000 |        102 |          1300 |
+|         104 | Bruce      | Ernst     | bruce.ernst@sqltutorial.org      | 590.423.4568 | 1991-05-21 |      9 |   6000 |        103 |          1400 |
+|         105 | David      | Austin    | david.austin@sqltutorial.org     | 590.423.4569 | 1997-06-25 |      9 |   4800 |        103 |          1500 |
+|         106 | Valli      | Pataballa | valli.pataballa@sqltutorial.org  | 590.423.4560 | 1998-02-05 |      9 |   4800 |        103 |          1600 |
+|         107 | Diana      | Lorentz   | diana.lorentz@sqltutorial.org    | 590.423.5567 | 1999-02-07 |      9 |   4200 |        103 |          1700 |
+|         108 | Nancy      | Greenberg | nancy.greenberg@sqltutorial.org  | 515.124.4569 | 1994-08-17 |      7 |  12000 |        101 |          1800 |
+|         109 | Daniel     | Faviet    | daniel.faviet@sqltutorial.org    | 515.124.4169 | 1994-08-16 |      6 |   9000 |        108 |          1900 |
++-------------+------------+-----------+----------------------------------+--------------+------------+--------+--------+------------+---------------+
+10 rows in set (0.00 sec)
+
+mysql> select * from jobs;
++--------+---------------------------------+------------+------------+
+| job_id | job_title                       | min_salary | max_salary |
++--------+---------------------------------+------------+------------+
+|      1 | Public Accountant               |    4200.00 |    9000.00 |
+|      2 | Accounting Manager              |    8200.00 |   16000.00 |
+|      3 | Administration Assistant        |    3000.00 |    6000.00 |
+|      4 | President                       |   20000.00 |   40000.00 |
+|      5 | Administration Vice President   |   15000.00 |   30000.00 |
+|      6 | Accountant                      |    4200.00 |    9000.00 |
+|      7 | Finance Manager                 |    8200.00 |   16000.00 |
+|      8 | Human Resources Representative  |    4000.00 |    9000.00 |
+|      9 | Programmer                      |    4000.00 |   10000.00 |
+|     10 | Marketing Manager               |    9000.00 |   15000.00 |
+|     11 | Marketing Representative        |    4000.00 |    9000.00 |
+|     12 | Public Relations Representative |    4500.00 |   10500.00 |
+|     13 | Purchasing Clerk                |    2500.00 |    5500.00 |
+|     14 | Purchasing Manager              |    8000.00 |   15000.00 |
+|     15 | Sales Manager                   |   10000.00 |   20000.00 |
+|     16 | Sales Representative            |    6000.00 |   12000.00 |
+|     17 | Shipping Clerk                  |    2500.00 |    5500.00 |
+|     18 | Stock Clerk                     |    2000.00 |    5000.00 |
+|     19 | Stock Manager                   |    5500.00 |    8500.00 |
++--------+---------------------------------+------------+------------+
+19 rows in set (0.01 sec)
+
+mysql> select * from locations;
++-------------+---------------------+-------------+-----------+----------------+------------+
+| location_id | street_address      | postal_code | city      | state_province | country_id |
++-------------+---------------------+-------------+-----------+----------------+------------+
+|        1000 | 2014 Jabberwocky Rd | 26192       | Southlake | Texas          | AR         |
+|        1100 | 2014 Jabberwocky Rd | 26192       | Southlake | Texas          | AU         |
+|        1200 | 2014 Jabberwocky Rd | 26192       | Southlake | Texas          | BE         |
+|        1300 | 2014 Jabberwocky Rd | 26192       | Southlake | Texas          | BR         |
+|        1400 | 2014 Jabberwocky Rd | 26192       | Southlake | Texas          | CA         |
+|        1500 | 2014 Jabberwocky Rd | 26192       | Southlake | Texas          | CH         |
+|        1600 | 2014 Jabberwocky Rd | 26192       | Southlake | Texas          | CN         |
+|        1700 | 2014 Jabberwocky Rd | 26192       | Southlake | Texas          | DE         |
+|        1800 | 2014 Jabberwocky Rd | 26192       | Southlake | Texas          | DK         |
+|        1900 | 2014 Jabberwocky Rd | 26192       | Southlake | Texas          | EG         |
++-------------+---------------------+-------------+-----------+----------------+------------+
+10 rows in set (0.00 sec)
+
+mysql> select * from regions;
++-----------+------------------------+
+| region_id | region_name            |
++-----------+------------------------+
+|         1 | Europe                 |
+|         2 | Americas               |
+|         3 | Asia                   |
+|         4 | Middle East and Africa |
++-----------+------------------------+
+4 rows in set (0.00 sec)
+
+mysql> select * from employees where location_id=1700;
+ERROR 1054 (42S22): Unknown column 'location_id' in 'where clause'
+mysql> select * from employees where location_id =(select location_id from locations where location_id=1700);
+ERROR 1054 (42S22): Unknown column 'location_id' in 'where clause'
+mysql> desc employees;
++---------------+--------------+------+-----+---------+----------------+
+| Field         | Type         | Null | Key | Default | Extra          |
++---------------+--------------+------+-----+---------+----------------+
+| employee_id   | int          | NO   | PRI | NULL    | auto_increment |
+| first_name    | varchar(20)  | YES  |     | NULL    |                |
+| last_name     | varchar(25)  | NO   |     | NULL    |                |
+| email         | varchar(100) | NO   |     | NULL    |                |
+| phone_number  | varchar(20)  | YES  |     | NULL    |                |
+| hire_date     | date         | NO   |     | NULL    |                |
+| job_id        | int          | NO   | MUL | NULL    |                |
+| salary        | int          | NO   |     | NULL    |                |
+| manager_id    | int          | YES  | MUL | NULL    |                |
+| department_id | int          | YES  | MUL | NULL    |                |
++---------------+--------------+------+-----+---------+----------------+
+10 rows in set (0.00 sec)
+
+mysql> desc locations;
++----------------+-------------+------+-----+---------+----------------+
+| Field          | Type        | Null | Key | Default | Extra          |
++----------------+-------------+------+-----+---------+----------------+
+| location_id    | int         | NO   | PRI | NULL    | auto_increment |
+| street_address | varchar(40) | YES  |     | NULL    |                |
+| postal_code    | varchar(12) | YES  |     | NULL    |                |
+| city           | varchar(30) | NO   |     | NULL    |                |
+| state_province | varchar(25) | YES  |     | NULL    |                |
+| country_id     | char(2)     | NO   | MUL | NULL    |                |
++----------------+-------------+------+-----+---------+----------------+
+6 rows in set (0.00 sec)
+
+mysql> desc departments;
++-----------------+-------------+------+-----+---------+----------------+
+| Field           | Type        | Null | Key | Default | Extra          |
++-----------------+-------------+------+-----+---------+----------------+
+| department_id   | int         | NO   | PRI | NULL    | auto_increment |
+| department_name | varchar(30) | NO   |     | NULL    |                |
+| location_id     | int         | YES  | MUL | NULL    |                |
++-----------------+-------------+------+-----+---------+----------------+
+3 rows in set (0.01 sec)
+
+mysql> select * from employees where department_id in (select department_id from departments where location_id=1700);
++-------------+------------+-----------+-------------------------------+--------------+------------+--------+--------+------------+---------------+
+| employee_id | first_name | last_name | email                         | phone_number | hire_date  | job_id | salary | manager_id | department_id |
++-------------+------------+-----------+-------------------------------+--------------+------------+--------+--------+------------+---------------+
+|         107 | Diana      | Lorentz   | diana.lorentz@sqltutorial.org | 590.423.5567 | 1999-02-07 |      9 |   4200 |        103 |          1700 |
++-------------+------------+-----------+-------------------------------+--------------+------------+--------+--------+------------+---------------+
+1 row in set (0.00 sec)
+
+mysql> 
+
+
