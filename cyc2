@@ -821,6 +821,109 @@ mysql> select * from employees where department_id in (select department_id from
 +-------------+------------+-----------+-------------------------------+--------------+------------+--------+--------+------------+---------------+
 1 row in set (0.00 sec)
 
-mysql> 
+mysql> select * from employees where department_id in (select department_id from departments where location_id !=1700);
++-------------+------------+-----------+----------------------------------+--------------+------------+--------+--------+------------+---------------+
+| employee_id | first_name | last_name | email                            | phone_number | hire_date  | job_id | salary | manager_id | department_id |
++-------------+------------+-----------+----------------------------------+--------------+------------+--------+--------+------------+---------------+
+|         100 | Steven     | King      | steven.king@sqltutorial.org      | 515.123.4567 | 1987-06-17 |      4 |  24000 |       NULL |          1000 |
+|         101 | Neena      | Kochhar   | neena.kochhar@sqltutorial.org    | 515.123.4568 | 1989-09-21 |      5 |  17000 |        100 |          1100 |
+|         102 | Lex        | De Haan   | lex.de haan@sqltutorial.org      | 515.123.4569 | 1993-01-13 |      5 |  17000 |        100 |          1200 |
+|         103 | Alexander  | Hunold    | alexander.hunold@sqltutorial.org | 590.423.4567 | 1990-01-03 |      9 |   9000 |        102 |          1300 |
+|         104 | Bruce      | Ernst     | bruce.ernst@sqltutorial.org      | 590.423.4568 | 1991-05-21 |      9 |   6000 |        103 |          1400 |
+|         105 | David      | Austin    | david.austin@sqltutorial.org     | 590.423.4569 | 1997-06-25 |      9 |   4800 |        103 |          1500 |
+|         106 | Valli      | Pataballa | valli.pataballa@sqltutorial.org  | 590.423.4560 | 1998-02-05 |      9 |   4800 |        103 |          1600 |
+|         108 | Nancy      | Greenberg | nancy.greenberg@sqltutorial.org  | 515.124.4569 | 1994-08-17 |      7 |  12000 |        101 |          1800 |
+|         109 | Daniel     | Faviet    | daniel.faviet@sqltutorial.org    | 515.124.4169 | 1994-08-16 |      6 |   9000 |        108 |          1900 |
++-------------+------------+-----------+----------------------------------+--------------+------------+--------+--------+------------+---------------+
+9 rows in set (0.00 sec)
+
+SELECT employee_id, first_name, last_name, salary FROM employees WHERE salary = (SELECT MAX(salary) FROM employees) ORDER BY first_name , last_name;
++-------------+------------+-----------+--------+
+| employee_id | first_name | last_name | salary |
++-------------+------------+-----------+--------+
+|         100 | Steven     | King      |  24000 |
++-------------+------------+-----------+--------+
+1 row in set (0.00 sec)
 
 
+SELECT employee_id, first_name, last_name, salary FROM employees WHERE salary > (SELECT AVG(salary) FROM employees) 
+
++-------------+------------+-----------+--------+
+| employee_id | first_name | last_name | salary |
++-------------+------------+-----------+--------+
+|         100 | Steven     | King      |  24000 |
+|         101 | Neena      | Kochhar   |  17000 |
+|         102 | Lex        | De Haan   |  17000 |
+|         108 | Nancy      | Greenberg |  12000 |
++-------------+------------+-----------+--------+
+
+SELECT department_id,department_name FROM departments d WHERE EXISTS( SELECT 1 FROM employees e WHERE salary > 10000 AND e.department_id = d.department_id) ORDER BY department_name;
++---------------+-----------------+
+| department_id | department_name |
++---------------+-----------------+
+|          1000 | Administration  |
+|          1800 | Executive       |
+|          1100 | Marketing       |
+|          1200 | Purchasing      |
++---------------+-----------------+
+
+SELECT department_id,department_name FROM departments d WHERE EXISTS( SELECT 1 FROM employees e WHERE salary < 10000 AND e.department_id = d.department_id) ORDER BY department_name;
++---------------+------------------+
+| department_id | department_name  |
++---------------+------------------+
+|          1900 | Finance          |
+|          1300 | Human Resources  |
+|          1500 | IT               |
+|          1600 | Public Relations |
+|          1700 | Sales            |
+|          1400 | Shipping         |
++---------------+------------------+
+
+mysql> SELECT e.* FROM employees e JOIN ( SELECT department_id,MAX(salary) AS max_salary FROM employees GROUP BY department_id ) AS dept_max_salary ON e.department_id = dept_max_salary.department_id WHER
+E e.salary >= dept_max_salary.max_salary;
++-------------+------------+-----------+----------------------------------+--------------+------------+--------+--------+------------+---------------+
+| employee_id | first_name | last_name | email                            | phone_number | hire_date  | job_id | salary | manager_id | department_id |
++-------------+------------+-----------+----------------------------------+--------------+------------+--------+--------+------------+---------------+
+|         100 | Steven     | King      | steven.king@sqltutorial.org      | 515.123.4567 | 1987-06-17 |      4 |  24000 |       NULL |          1000 |
+|         101 | Neena      | Kochhar   | neena.kochhar@sqltutorial.org    | 515.123.4568 | 1989-09-21 |      5 |  17000 |        100 |          1100 |
+|         102 | Lex        | De Haan   | lex.de haan@sqltutorial.org      | 515.123.4569 | 1993-01-13 |      5 |  17000 |        100 |          1200 |
+|         103 | Alexander  | Hunold    | alexander.hunold@sqltutorial.org | 590.423.4567 | 1990-01-03 |      9 |   9000 |        102 |          1300 |
+|         104 | Bruce      | Ernst     | bruce.ernst@sqltutorial.org      | 590.423.4568 | 1991-05-21 |      9 |   6000 |        103 |          1400 |
+|         105 | David      | Austin    | david.austin@sqltutorial.org     | 590.423.4569 | 1997-06-25 |      9 |   4800 |        103 |          1500 |
+|         106 | Valli      | Pataballa | valli.pataballa@sqltutorial.org  | 590.423.4560 | 1998-02-05 |      9 |   4800 |        103 |          1600 |
+|         107 | Diana      | Lorentz   | diana.lorentz@sqltutorial.org    | 590.423.5567 | 1999-02-07 |      9 |   4200 |        103 |          1700 |
+|         108 | Nancy      | Greenberg | nancy.greenberg@sqltutorial.org  | 515.124.4569 | 1994-08-17 |      7 |  12000 |        101 |          1800 |
+|         109 | Daniel     | Faviet    | daniel.faviet@sqltutorial.org    | 515.124.4169 | 1994-08-16 |      6 |   9000 |        108 |          1900 |
++-------------+------------+-----------+----------------------------------+--------------+------------+--------+--------+------------+---------------+
+10 rows in set (0.01 sec)
+
+mysql> select avg(dept_avg_salary) as overall_avg_salary from (select department_id,avg(salary) as dept_avg_salary from employees group by department_id) as dept_avg_salary_subquery; 
++--------------------+
+| overall_avg_salary |
++--------------------+
+|     10780.00000000 |
++--------------------+
+1 row in set (0.00 sec)
+
+    
+SELECT employee_id,first_name,last_name, salary,(SELECT ROUND(AVG(salary), 0) FROM employees) AS average_salary,salary - (SELECT ROUND(AVG(salary), 0) FROM employees) AS difference FROM employees ORDER BY first_name, last_name;
+    
++-------------+------------+-----------+--------+----------------+------------+
+| employee_id | first_name | last_name | salary | average_salary | difference |
++-------------+------------+-----------+--------+----------------+------------+
+|         103 | Alexander  | Hunold    |   9000 |          10780 |      -1780 |
+|         104 | Bruce      | Ernst     |   6000 |          10780 |      -4780 |
+|         109 | Daniel     | Faviet    |   9000 |          10780 |      -1780 |
+|         105 | David      | Austin    |   4800 |          10780 |      -5980 |
+|         107 | Diana      | Lorentz   |   4200 |          10780 |      -6580 |
+|         102 | Lex        | De Haan   |  17000 |          10780 |       6220 |
+|         108 | Nancy      | Greenberg |  12000 |          10780 |       1220 |
+|         101 | Neena      | Kochhar   |  17000 |          10780 |       6220 |
+|         100 | Steven     | King      |  24000 |          10780 |      13220 |
+|         106 | Valli      | Pataballa |   4800 |          10780 |      -5980 |
++-------------+------------+-----------+--------+----------------+------------+
+      
+        
+            
+        
+ 
