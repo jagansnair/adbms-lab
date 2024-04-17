@@ -1,0 +1,180 @@
+atabase changed
+mysql> SELECT employee_id,first_name,last_name, salary,(SELECT ROUND(AVG(salary), 0) FROM employees) AS average_salary,salary - (SELECT ROUND(AVG(salary), 0) FROM employees) AS difference FROM employees ORDER BY first_name, last_name;
++-------------+------------+-----------+------------+----------------+------------+
+| employee_id | first_name | last_name | salary     | average_salary | difference |
++-------------+------------+-----------+------------+----------------+------------+
+|           4 | arjun      | varma     |  280000.00 |         513200 | -233200.00 |
+|           5 | arun       | varma     |    6000.00 |         513200 | -507200.00 |
+|           3 | john       | taylor    |  230000.00 |         513200 | -283200.00 |
+|           1 | smith      | hope      |  150000.00 |         513200 | -363200.00 |
+|           2 | zen        | hope      | 1900000.00 |         513200 | 1386800.00 |
++-------------+------------+-----------+------------+----------------+------------+
+5 rows in set (0.04 sec)
+
+mysql> SELECT e.* FROM employees e WHERE e.salary > (SELECT AVG(e2.salary) FROM Employees e2 WHERE e2.department_id = e.department_id);
+ERROR 1146 (42S02): Table 'schem.Employees' doesn't exist
+mysql> SELECT e.* FROM employees e WHERE e.salary > (SELECT AVG(e2.salary) FROM employees e2 WHERE e2.department_id = e.department_id);
++-------------+------------+-----------+-----------------+--------------+------------+--------+------------+------------+---------------+
+| employee_id | first_name | last_name | email           | phone_number | hire_date  | job_id | salary     | manager_id | department_id |
++-------------+------------+-----------+-----------------+--------------+------------+--------+------------+------------+---------------+
+|           2 | zen        | hope      | zen@gmail.com   | 9565614531   | 1989-11-09 |      1 | 1900000.00 |        201 |             2 |
+|           4 | arjun      | varma     | arjun@gmail.com | 8565314531   | 1992-11-09 |      3 |  280000.00 |        103 |             1 |
++-------------+------------+-----------+-----------------+--------------+------------+--------+------------+------------+---------------+
+2 rows in set (0.00 sec)
+
+mysql> select * from Employees where employee_id not in (select employee_id from
+    -> dependents);
+ERROR 1146 (42S02): Table 'schem.Employees' doesn't exist
+mysql> select * from employees where employee_id not in (select employee_id from dependents);
++-------------+------------+-----------+-----------------+--------------+------------+--------+------------+------------+---------------+
+| employee_id | first_name | last_name | email           | phone_number | hire_date  | job_id | salary     | manager_id | department_id |
++-------------+------------+-----------+-----------------+--------------+------------+--------+------------+------------+---------------+
+|           1 | smith      | hope      | smith@gmail.com | 9565654531   | 1989-10-09 |      1 |  150000.00 |        101 |             1 |
+|           2 | zen        | hope      | zen@gmail.com   | 9565614531   | 1989-11-09 |      1 | 1900000.00 |        201 |             2 |
++-------------+------------+-----------+-----------------+--------------+------------+--------+------------+------------+---------------+
+2 rows in set (0.00 sec)
+
+mysql> select e.first_name,e.last_name,d.department_name from Employees e JOIN departments d ON e.department_id=d.department_id where e.department_id IN ('1','2','3');
+ERROR 1146 (42S02): Table 'schem.Employees' doesn't exist
+mysql> select e.first_name,e.last_name,d.department_name from employees e JOIN departments d ON e.department_id=d.department_id where e.department_id IN ('1','2','3');
++------------+-----------+-----------------+
+| first_name | last_name | department_name |
++------------+-----------+-----------------+
+| smith      | hope      | finance         |
+| arjun      | varma     | finance         |
+| zen        | hope      | marketing       |
+| arun       | varma     | marketing       |
++------------+-----------+-----------------+
+4 rows in set (0.00 sec)
+
+mysql> select*from employees;
++-------------+------------+-----------+-----------------+--------------+------------+--------+------------+------------+---------------+
+| employee_id | first_name | last_name | email           | phone_number | hire_date  | job_id | salary     | manager_id | department_id |
++-------------+------------+-----------+-----------------+--------------+------------+--------+------------+------------+---------------+
+|           1 | smith      | hope      | smith@gmail.com | 9565654531   | 1989-10-09 |      1 |  150000.00 |        101 |             1 |
+|           2 | zen        | hope      | zen@gmail.com   | 9565614531   | 1989-11-09 |      1 | 1900000.00 |        201 |             2 |
+|           3 | john       | taylor    | john@gmail.com  | 9565314531   | 1990-11-09 |      4 |  230000.00 |        102 |          NULL |
+|           4 | arjun      | varma     | arjun@gmail.com | 8565314531   | 1992-11-09 |      3 |  280000.00 |        103 |             1 |
+|           5 | arun       | varma     | arun@gmail.com  | 7565314531   | 1997-11-09 |      3 |    6000.00 |       NULL |             2 |
++-------------+------------+-----------+-----------------+--------------+------------+--------+------------+------------+---------------+
+5 rows in set (0.00 sec)
+
+mysql> select e.first_name,e.last_name,d.department_name from employees e JOIN departments d ON e.department_id=d.department_id where e.department_id IN ('1','2','3') and e.salary>10000;
++------------+-----------+-----------------+
+| first_name | last_name | department_name |
++------------+-----------+-----------------+
+| smith      | hope      | finance         |
+| arjun      | varma     | finance         |
+| zen        | hope      | marketing       |
++------------+-----------+-----------------+
+3 rows in set (0.00 sec)
+
+mysql> select d.department_name,l.street_address,l.postalcode,c.country_name,r.region_name FROM departments d JOIN locations l ON d.location_id=l.location_id JOIN countries c ON l.country_id = c.country_id JOIN regions r ON c.region_id = r.region_id;
+ERROR 1054 (42S22): Unknown column 'l.postalcode' in 'field list'
+mysql> select d.department_name,l.street_address,l.postal_code,c.country_name,r.region_name FROM departments d JOIN locations l ON d.location_id=l.location_id JOIN countries c ON l.country_id = c.country_id JOIN regions r ON c.region_id = r.region_id;
++-----------------+---------------------+-------------+--------------+------------------------+
+| department_name | street_address      | postal_code | country_name | region_name            |
++-----------------+---------------------+-------------+--------------+------------------------+
+| accounting      | sharja road 1500    | 488133      | sharja       | Middle East and Africa |
+| marketing       | sharja road 1500    | 488133      | sharja       | Middle East and Africa |
+| sales           | 2014 Jabberwocky Rd | 26192       | brazil       | America                |
+| finance         | 001 juma street     | 890901      | india        | Asia                   |
++-----------------+---------------------+-------------+--------------+------------------------+
+4 rows in set (0.00 sec)
+
+mysql> SELECT e.first_name, e.last_name, d.department_id, d.department_name FROM employees e LEFT JOIN departments d ON e.department_id =d.department_id;
++------------+-----------+---------------+-----------------+
+| first_name | last_name | department_id | department_name |
++------------+-----------+---------------+-----------------+
+| smith      | hope      |             1 | finance         |
+| zen        | hope      |             2 | marketing       |
+| john       | taylor    |          NULL | NULL            |
+| arjun      | varma     |             1 | finance         |
+| arun       | varma     |             2 | marketing       |
++------------+-----------+---------------+-----------------+
+5 rows in set (0.00 sec)
+
+mysql> SELECT e.first_name, e.last_name, d.department_name, l.city,
+    -> l.state_province FROM employees e JOIN departments d ON e.department_id =d.department_id JOIN location l ON d.location_id=l.location_id WHERE e.first_name
+    -> LIKE '%Z%';
+ERROR 1146 (42S02): Table 'schem.location' doesn't exist
+mysql> SELECT e.first_name, e.last_name, d.department_name, l.city, l.state_province FROM employees e JOIN departments d ON e.department_id =d.department_id JOIN locations l ON d.location_id=l.location_id WHERE e.first_name LIKE '%Z%';
++------------+-----------+-----------------+---------------+----------------+
+| first_name | last_name | department_name | city          | state_province |
++------------+-----------+-----------------+---------------+----------------+
+| zen        | hope      | marketing       | sharja palace | new sharja     |
++------------+-----------+-----------------+---------------+----------------+
+1 row in set (0.00 sec)
+
+mysql> SELECT e.first_name, e.last_name, d.department_id, d.department_name from departments d left join employees e on d.department_id=e.department_id;
++------------+-----------+---------------+-----------------+
+| first_name | last_name | department_id | department_name |
++------------+-----------+---------------+-----------------+
+| arjun      | varma     |             1 | finance         |
+| smith      | hope      |             1 | finance         |
+| arun       | varma     |             2 | marketing       |
+| zen        | hope      |             2 | marketing       |
+| NULL       | NULL      |             3 | sales           |
+| NULL       | NULL      |             4 | accounting      |
++------------+-----------+---------------+-----------------+
+6 rows in set (0.00 sec)
+
+mysql> SELECT e.first_name AS employee_first_name, m.first_name AS
+    -> manager_first_name FROM Employees e LEFT JOIN Employees m ON
+    -> e.manager_id = m.employee_id
+    -> ;
+ERROR 1146 (42S02): Table 'schem.Employees' doesn't exist
+mysql> SELECT e.first_name AS employee_first_name, m.first_name AS manager_first_name FROM employees e LEFT JOIN Employees m ON e.manager_id = m.employee_id;
+ERROR 1146 (42S02): Table 'schem.Employees' doesn't exist
+mysql> SELECT e.first_name AS employee_first_name, m.first_name AS manager_first_name FROM employees e LEFT JOIN employees m ON e.manager_id = m.employee_id;
++---------------------+--------------------+
+| employee_first_name | manager_first_name |
++---------------------+--------------------+
+| smith               | NULL               |
+| zen                 | NULL               |
+| john                | NULL               |
+| arjun               | NULL               |
+| arun                | NULL               |
++---------------------+--------------------+
+5 rows in set (0.00 sec)
+
+mysql> update employees set manager_id=1 where employee_id=2;
+Query OK, 1 row affected (0.00 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> update employees set manager_id=3 where employee_id=4;
+Query OK, 1 row affected (0.04 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> update employees set manager_id=3 where employee_id=5;
+Query OK, 1 row affected (0.05 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> update employees set manager_id=1 where employee_id=3;
+Query OK, 1 row affected (0.05 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> SELECT e.first_name AS employee_first_name, m.first_name AS manager_first_name FROM employees e LEFT JOIN employees m ON e.manager_id = m.employee_id;
++---------------------+--------------------+
+| employee_first_name | manager_first_name |
++---------------------+--------------------+
+| smith               | NULL               |
+| zen                 | smith              |
+| john                | smith              |
+| arjun               | john               |
+| arun                | john               |
++---------------------+--------------------+
+5 rows in set (0.00 sec)
+
+mysql> SELECT e.first_name, e.last_name, e.department_id FROM employees e INNER JOIN employees t ON e.department_id = t.department_id WHERE t.last_name = 'Taylor';
+Empty set (0.00 sec)
+
+mysql> SELECT e.first_name, e.last_name, e.department_id FROM employees e INNER JOIN employees t ON e.department_id = t.department_id WHERE t.last_name = 'taylor';
+Empty set (0.00 sec)
+
+mysql> SELECT e.first_name, e.last_name, e.department_id FROM employees e  JOIN employees t ON e.department_id = t.department_id WHERE t.last_name = 'taylor';
+Empty set (0.00 sec)
+
+mysql> SELECT e.first_name, e.last_name, e.department_id FROM employees e INNER JOIN employees t ON e.department_id = t.department_id WHERE t.last_name = 'taylor';
+
+
